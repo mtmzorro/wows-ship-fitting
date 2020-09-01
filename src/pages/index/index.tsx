@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, Button, Text } from "@tarojs/components";
+import { View, Button, Text, Image } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import { getAllShip, IShipData } from "../../utils/getShip";
+import getShipName from "../../utils/getShipName";
+import Fitting from "../fitting/fitting";
 
 import "./index.scss";
 
@@ -14,7 +18,28 @@ import "./index.scss";
 //
 // #endregion
 
+type IState = {
+    shipData: IShipData
+}
+
+interface Index {
+    state: IState;
+}
+
 class Index extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            shipData: []
+        }
+    }
+    
+    componentWillMount() {
+        this.setState({
+            shipData: getAllShip()
+        })
+    }
+
     componentWillReceiveProps(nextProps) {
         console.log(this.props, nextProps);
     }
@@ -25,12 +50,42 @@ class Index extends Component {
 
     componentDidHide() {}
 
+    getShipImg(id: string) {
+        return `https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/ship_previews/${id}.png`
+    }
+
+    getCommanderImg(data: any) {
+        return `https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/crew_commander/base/${data.nation}/${data.name}.png`
+    }
+
+    buttonClickHandle() {
+        Taro.navigateTo({
+            url: '/pages/fitting/fitting'
+        })
+    }
+
     render() {
         return (
             <View className='index'>
                 <View>
                     <Text>Hello, World</Text>
+                    <View>
+                        ID: {this.state.shipData[0].id}
+                    </View>
+                    <View>
+                        Name: {getShipName(this.state.shipData[0].id)}
+                    </View>
+                    <Text>国家: {this.state.shipData[0].nation}</Text>
+                    <Text>T: {this.state.shipData[0].tier}</Text>
+                    <Image src={this.getShipImg(this.state.shipData[0].id)}></Image>
                 </View>
+                <View>
+                    <View>舰长: Azur_Belfast</View>
+                    <View>
+                        <Image src={this.getCommanderImg({name: 'Azur_Belfast', nation: 'United_Kingdom'})}></Image>
+                    </View>
+                </View>
+                <Button onClick={this.buttonClickHandle}>创建我的配船方案</Button>
             </View>
         );
     }
