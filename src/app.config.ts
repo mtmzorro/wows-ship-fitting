@@ -1,7 +1,9 @@
 export default {
   pages: [
     'pages/index/index',
-    'pages/fitting/fitting'
+    'pages/fitting/fitting',
+    'pages/fittingEditor/fittingEditor',
+    'pages/shipSelector/shipSelector'
   ],
   window: {
     backgroundTextStyle: 'light',
