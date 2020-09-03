@@ -1,5 +1,7 @@
-import React, {useState, useEffect, useRef, useMemo} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
+import Taro from '@tarojs/taro'
 import { View, Button, Text, Image } from "@tarojs/components";
+import { useSelector, useDispatch } from 'react-redux'
 import { Ship, ShipSpecies, Nation } from '../../type/types';
 import {
     getShipsByNation,
@@ -7,11 +9,17 @@ import {
     getShipSpeciesList,
 } from "../../service/ship";
 import ShipItem from './shipItem'
+import { setShipId } from '../../actions/fittingEditor';
 
 const nationList = getNationList() as Nation[]
 const shipSpeciesList = getShipSpeciesList() as ShipSpecies[]
 
 const ShipSelector: React.FC = () => {
+
+    // connect store
+    // const shipId = useSelector(state => state.fittingEditor.shipId)
+    const dispatch = useDispatch()
+    
     const [curNation, setCurNation] = useState<Nation | null>(null)
     const [curShipSpecies, setShipSpecies] = useState<ShipSpecies | null>(null)
     const [curShipList, setCurShipList] = useState<Ship[]>([])
@@ -24,9 +32,11 @@ const ShipSelector: React.FC = () => {
         setShipSpecies(shipSpecies)
     }
 
-    const handleShipSelect = (ship: Ship) => {
-        console.log(ship)
-    }
+    // dispatch to fittingEditor
+    const handleShipSelect = useCallback((ship: Ship) => {
+        dispatch(setShipId(ship.id))
+        Taro.redirectTo({url: '/pages/fittingEditor/fittingEditor'})
+    }, [dispatch])
 
     // curShipSpecies 最终更新，查询舰船列表
     useEffect(() => {
