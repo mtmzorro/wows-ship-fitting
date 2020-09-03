@@ -34,16 +34,16 @@ export interface Commander {
     nation: Nation
 }
 
-export interface Plan {
+export interface Fitting {
     id: number
     createDate: number
     modifyDate: number
     author: string
-    planName: string
     shipId: string
     commanderId: string
-    commanderSkill: [][]
-    upgrade: [][]
+    commanderSkill: any[]
+    upgrade: any[]
+    title: string
     description: string
 }
 
@@ -51,5 +51,5 @@ export interface User {
     id: string
     unionID: string
     nickName: string
-    plans: Plan[]
+    plans: Fitting[]
 }

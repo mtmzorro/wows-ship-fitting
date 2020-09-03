@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import counter from './counter'
+import fittingEditor from './fittingEditor'
 
 export default combineReducers({
-  counter
+  fittingEditor
 })
