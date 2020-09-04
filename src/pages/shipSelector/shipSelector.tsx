@@ -9,7 +9,7 @@ import {
     getShipSpeciesList,
 } from "../../service/ship";
 import ShipItem from './shipItem'
-import { setShipId } from '../../actions/fittingEditor';
+import { actions } from '../../reducers/fittingEditor';
 
 const nationList = getNationList() as Nation[]
 const shipSpeciesList = getShipSpeciesList() as ShipSpecies[]
@@ -34,7 +34,7 @@ const ShipSelector: React.FC = () => {
 
     // dispatch to fittingEditor
     const handleShipSelect = useCallback((ship: Ship) => {
-        dispatch(setShipId(ship.id))
+        dispatch(actions.setShipId(ship.id))
         Taro.redirectTo({url: '/pages/fittingEditor/fittingEditor'})
     }, [dispatch])
 

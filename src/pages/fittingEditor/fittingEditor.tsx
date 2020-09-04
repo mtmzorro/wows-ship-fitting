@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Button, Text, Image, Label, Input, Textarea} from '@tarojs/components'
+import { View, Button, Text, Image, Label, Input, Textarea, Form } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { shipNameLocalize } from '../../utils/localization'
 import { Fitting } from '../../type/types'
-import { setFittingEditor } from '../../actions/fittingEditor'
 import { saveFitting } from '../../service/common'
+import { actions } from '../../reducers/fittingEditor'
+import useDebouce from '../../utils/useDebouce'
 
 const FittingEditor: React.FC = () => {
     // connect store
@@ -23,6 +24,20 @@ const FittingEditor: React.FC = () => {
     } = useSelector((state) => state.fittingEditor) as Fitting
     const dispatch = useDispatch()
 
+    const [inputTitle, setInputTitle] = useState<string>(title)
+    const [inputDescription, setInputDescription] = useState<string>(description)
+    const debouceTitle = useDebouce(inputTitle)
+    const debouceDescription = useDebouce(inputDescription)
+
+    // 同步至 store 中
+    useEffect(() => {
+        const cache = {
+            title: inputTitle,
+            description: inputDescription,
+        }
+        dispatch(actions.setFittingEditor(cache))
+    }, [debouceTitle, debouceDescription])
+
     const handleShipSelector = () => {
         Taro.navigateTo({ url: '/pages/shipSelector/shipSelector' })
     }
@@ -37,11 +52,11 @@ const FittingEditor: React.FC = () => {
             commanderId: 'haru',
             commanderSkill: [1, 2, 3],
             upgrade: [2, 3, 4],
-            title: '测试数据',
-            description: '测试描述内容内容',
+            title: title,
+            description: description,
             shipId: shipId,
         }
-        dispatch(setFittingEditor(cache))
+        // dispatch(setFittingEditor(cache))
         saveFitting(cache)
             .then((result) => {
                 console.log('FittingEditor save success')
@@ -53,6 +68,7 @@ const FittingEditor: React.FC = () => {
 
     return (
         <View>
+            {console.log('FittingEditor render')}
             <View className='preview'>
                 <View className='ship'></View>
                 <View className='commander'></View>
@@ -68,7 +84,6 @@ const FittingEditor: React.FC = () => {
             <View>
                 <Label>选择舰长</Label>
                 {commanderId ? commanderId : <Button>点击选择</Button>}
-                <Button>点击选择</Button>
             </View>
             <View>
                 <Label>舰长技能</Label>
@@ -82,8 +97,20 @@ const FittingEditor: React.FC = () => {
             </View>
             <View>
                 <Label>配置说明</Label>
-                <Input placeholder='配置名称' value={title}></Input>
-                <Textarea placeholder='战舰装配理念' value={description}></Textarea>
+                <Input
+                    id='title'
+                    name='title'
+                    placeholder='配置名称'
+                    value={inputTitle}
+                    onInput={(e: any) => setInputTitle(e.target.value)}
+                ></Input>
+                <Textarea
+                    id='description'
+                    name='description'
+                    placeholder='战舰装配理念'
+                    value={inputDescription}
+                    onInput={(e: any) => setInputDescription(e.target.value)}
+                ></Textarea>
             </View>
             <Button onClick={handleSave}>保存装配方案</Button>
         </View>
