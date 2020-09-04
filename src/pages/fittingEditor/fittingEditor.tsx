@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Button, Text, Image, Label, Input, Textarea } from '@tarojs/components'
+import { View, Button, Text, Image, Label, Input, Textarea} from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { shipNameLocalize } from '../../utils/localization'
 import { Fitting } from '../../type/types'
 import { setFittingEditor } from '../../actions/fittingEditor'
+import { saveFitting } from '../../service/common'
 
 const FittingEditor: React.FC = () => {
     // connect store
@@ -28,20 +29,26 @@ const FittingEditor: React.FC = () => {
 
     // save
     const handleSave = () => {
-        dispatch(
-            setFittingEditor({
-                id: new Date().getTime(),
-                createDate: new Date().getTime(),
-                modifyDate: new Date().getTime(),
-                author: 'mtmzorro',
-                commanderId: 'haru',
-                commanderSkill: [1, 2, 3],
-                upgrade: [2, 3, 4],
-                title: '测试数据',
-                description: '测试描述内容内容',
-                shipId: shipId,
+        const cache = {
+            id: new Date().getTime(),
+            createDate: new Date().getTime(),
+            modifyDate: new Date().getTime(),
+            author: 'mtmzorro',
+            commanderId: 'haru',
+            commanderSkill: [1, 2, 3],
+            upgrade: [2, 3, 4],
+            title: '测试数据',
+            description: '测试描述内容内容',
+            shipId: shipId,
+        }
+        dispatch(setFittingEditor(cache))
+        saveFitting(cache)
+            .then((result) => {
+                console.log('FittingEditor save success')
             })
-        )
+            .catch((error) => {
+                console.log('FittingEditor save error')
+            })
     }
 
     return (

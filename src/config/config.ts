@@ -4,8 +4,9 @@ const config = {
     CDNPath: 'https://jsfi',
     imageCDNPath: 'https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/',
     leanCould: {
-        appKey: '',
-        appSome: '',
+        appId: 'KaCFzqPM8xXss53Jnjag7aae-gzGzoHsz',
+        appKey: 'YxRPcCLDwAbxuzlAog0YLhDC',
+        serverURL: 'https://avoscloud.com',
     },
 }
 
