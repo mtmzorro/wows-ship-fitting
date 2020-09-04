@@ -1,5 +1,20 @@
 import { Ship, Fitting } from '../type/types'
-import actionType from '../constants/fittingEditor'
+
+// Actions type
+export enum actionType {
+    SET_ID = 'SET_ID',
+    SET_CREATE_DATA = 'SET_CREATE_DATA',
+    SET_MODIFY_DATE = 'SET_MODIFY_DATE',
+    SET_AUTHOR = 'SET_AUTHOR',
+    SET_FITTING_NAME = 'SET_FITTING_NAME',
+    SET_SHIP_ID = 'SET_SHIP_ID',
+    SET_COMMANDER_ID = 'SET_COMMANDER_ID',
+    SET_COMMANDER_SKILL = 'SET_COMMANDER_SKILL',
+    SET_UPGRADE = 'SET_UPGRADE',
+    SET_TITLE = 'SET_TITLE',
+    SET_DESCRIPTION = 'SET_DESCRIPTION',
+    SET_FITTING_EDITOR = 'SET_FITTING_EDITOR',
+}
 
 const INITIAL_STATE: Fitting = {
     id: 0,
@@ -14,7 +29,8 @@ const INITIAL_STATE: Fitting = {
     description: '',
 }
 
-export default function counter(state = INITIAL_STATE, action) {
+// Reducer
+export default function fittingEditor(state = INITIAL_STATE, action) {
     switch (action.type) {
         case actionType.SET_SHIP_ID:
             return {
@@ -29,4 +45,20 @@ export default function counter(state = INITIAL_STATE, action) {
         default:
             return state
     }
+}
+
+// Action Creators
+export const actions = {
+    setShipId: (shipId: string) => {
+        return {
+            type: actionType.SET_SHIP_ID,
+            payload: shipId
+        }
+    },
+    setFittingEditor: (fitting: Partial<Fitting>) => {
+        return {
+            type: actionType.SET_FITTING_EDITOR,
+            payload: fitting
+        }
+    },
 }
