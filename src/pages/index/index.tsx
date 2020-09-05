@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { View, Button, Text, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useReady, UserInfo } from '@tarojs/taro'
 
 import Fitting from '../fitting/fitting'
-import { Ship } from '../../type/types'
+import { Ship, User } from '../../type/types'
 import { getShips } from '../../service/ship'
 import { shipNameLocalize } from '../../utils/localization'
-import { queryAllFitting } from '../../service/common'
+import { queryAllFitting, login, checkUserInfoSetting } from '../../service/common'
+import { actions } from '../../reducers/user'
 
 import './index.scss'
 
@@ -21,85 +22,83 @@ import './index.scss'
 //
 // #endregion
 
-type State = {
-    shipData: Ship[]
+const getShipImg = (id: string) => {
+    return `https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/ship_previews/${id}.png`
 }
 
-interface Index {
-    state: State
+const getCommanderImg = (data: any) => {
+    return `https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/crew_commander/base/${data.nation}/${data.name}.png`
 }
 
-class Index extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            shipData: [],
-        }
-    }
+const Index: React.FC = () => {
+    const dispatch = useDispatch()
+    const [shipData, setShipData] = useState<Ship[]>([])
 
-    componentWillMount() {
-        this.setState({
-            shipData: getShips(),
-        })
-    }
+    useReady(() => {
+        login()
+            .then((user) => {
+                const userId = user.id
+                const userOpenId = user.attributes.authData.lc_weapp.openid
+                dispatch(actions.setUserId(userId))
+                dispatch(actions.setUserOpenId(userOpenId))
+            })
+            .catch((error) => {
+                console.log(`Page Index login error`, error)
+            })
+    })
 
-    componentWillReceiveProps(nextProps) {
-        console.log(this.props, nextProps)
-    }
-
-    componentWillUnmount() {}
-
-    componentDidShow() {
+    useEffect(() => {
+        setShipData(getShips())
+        // wechatLogin()
         // 获取服务端 全部 Fitting
         // queryAllFitting()
         //     .then((result) => {
         //         console.log(result)
         //     })
         //     .catch((result) => {})
+    }, [])
+
+    // 新建方案、用户中心 需要获取用户信息授权
+    const buttonClickHandle = (e) => {
+        const userInfo: User = e.detail.userInfo
+        if (userInfo) {
+            dispatch(actions.setUserInfo(userInfo))
+            Taro.navigateTo({
+                url: '/pages/fittingEditor/fittingEditor?id=new',
+            })
+        }
+        // checkUserInfoSetting()
     }
 
-    componentDidHide() {}
-
-    getShipImg(id: string) {
-        return `https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/ship_previews/${id}.png`
-    }
-
-    getCommanderImg(data: any) {
-        return `https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/crew_commander/base/${data.nation}/${data.name}.png`
-    }
-
-    buttonClickHandle() {
-        Taro.navigateTo({
-            url: '/pages/fittingEditor/fittingEditor',
-        })
-    }
-
-    render() {
-        return (
-            <View className='index'>
+    return (
+        <View className='index'>
+            {console.log('index render')}
+            {shipData.length > 0 && (
                 <View>
                     <Text>Hello, World</Text>
-                    <View>ID: {this.state.shipData[0].id}</View>
-                    <View>Name: {shipNameLocalize(this.state.shipData[0].id)}</View>
-                    <Text>国家: {this.state.shipData[0].nation}</Text>
-                    <Text>T: {this.state.shipData[0].tier}</Text>
-                    <Image src={this.getShipImg(this.state.shipData[0].id)}></Image>
+                    <View>ID: {shipData[0].id}</View>
+                    <View>Name: {shipNameLocalize(shipData[0].id)}</View>
+                    <Text>国家: {shipData[0].nation}</Text>
+                    <Text>T: {shipData[0].tier}</Text>
+                    <Image src={getShipImg(shipData[0].id)}></Image>
                 </View>
+            )}
+            <View>
+                <View>舰长: Azur_Belfast</View>
                 <View>
-                    <View>舰长: Azur_Belfast</View>
-                    <View>
-                        <Image
-                            src={this.getCommanderImg({
-                                name: 'Azur_Belfast',
-                                nation: 'United_Kingdom',
-                            })}
-                        ></Image>
-                    </View>
+                    <Image
+                        src={getCommanderImg({
+                            name: 'Azur_Belfast',
+                            nation: 'United_Kingdom',
+                        })}
+                    ></Image>
                 </View>
-                <Button onClick={this.buttonClickHandle}>创建我的配船方案</Button>
             </View>
-        )
-    }
+            <Button onGetUserInfo={buttonClickHandle} openType='getUserInfo'>
+                创建我的配船方案
+            </Button>
+        </View>
+    )
 }
 
 export default Index
