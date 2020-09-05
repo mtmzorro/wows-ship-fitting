@@ -3,6 +3,18 @@ import AV from 'leancloud-storage/dist/av-weapp.js'
 import Taro, { UserInfo } from '@tarojs/taro'
 import { Fitting, User } from '../type/types'
 import LearnCloud from '../utils/learnCloud'
+import nationData from '../data/nation'
+import shipSpeciesData from '../data/shipSpecies'
+
+// get 国家列表
+export const getNationList = () => {
+    return [ ...nationData ]
+}
+
+// get 舰船分类列表
+export const getShipSpeciesList = () => {
+    return [ ...shipSpeciesData ]
+}
 
 export const saveFitting = (fitting: Partial<Fitting>): Promise<any> => {
     return LearnCloud.save('Fitting', fitting)
@@ -95,8 +107,11 @@ export const getUserInfo = () => {
     return new Promise((resolve, reject) => {
         Taro.getUserInfo({
             success: ({ userInfo }) => {
-                console.log('wx ', userInfo)
+                resolve(userInfo)
             },
+            fail: (error) => {
+                reject(error)
+            }
         })
     })
 }

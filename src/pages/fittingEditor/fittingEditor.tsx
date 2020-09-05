@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Button, Text, Image, Label, Input, Textarea, Form } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { shipNameLocalize } from '../../utils/localization'
+import { shipNameLocalize, commanderNameLocalize } from '../../utils/localization'
 import { Fitting, User } from '../../type/types'
 import { saveFitting, checkUserInfoSetting, getUserInfo } from '../../service/common'
 
@@ -21,33 +21,6 @@ const FittingEditor: React.FC = () => {
     const [inputTitle, setInputTitle] = useState<string>(fittingEditor.title)
     const [inputDescription, setInputDescription] = useState<string>(fittingEditor.description)
 
-    // useEffect(() => {
-    //     checkUserInfoSetting.then((result) => {
-    //         if (!result) {
-    //             Taro.showModal({
-    //                 title: '提示',
-    //                 content: '新建装备方案保存时，需要您的用户数据，还请授权',
-    //                 success(res) {
-    //                     if (res.confirm) {
-    //                         console.log('用户点击确定')
-    //                         Taro.openSetting({
-    //                             success: function (settings) {
-    //                                 console.log(settings.authSetting)
-    //                                 // res.authSetting = {
-    //                                 //   "scope.userInfo": true,
-    //                                 //   "scope.userLocation": true
-    //                                 // }
-    //                             },
-    //                         })
-    //                     } else if (res.cancel) {
-    //                         console.log('用户点击取消')
-    //                     }
-    //                 },
-    //             })
-    //         }
-    //     })
-    // }, [])
-
     useEffect(() => {
         checkUserInfoSetting()
     }, [])
@@ -56,12 +29,16 @@ const FittingEditor: React.FC = () => {
         Taro.navigateTo({ url: '/pages/shipSelector/shipSelector' })
     }
 
+    const handleCmdrSelector = () => {
+        Taro.navigateTo({ url: '/pages/cmdrSelector/cmdrSelector' })
+    }
+
     // save
     const handleSave = () => {
         const cache = {
             authorNickName: user.nickName,
             authorOpenId: user.openId,
-            commanderId: 'haru',
+            commanderName: fittingEditor.commanderName,
             commanderSkill: [1, 2, 3],
             upgrade: [2, 3, 4],
             title: inputTitle,
@@ -101,7 +78,11 @@ const FittingEditor: React.FC = () => {
             </View>
             <View>
                 <Label>选择舰长</Label>
-                {fittingEditor.commanderId ? fittingEditor.commanderId : <Button>点击选择</Button>}
+                {fittingEditor.commanderName ? (
+                    commanderNameLocalize(fittingEditor.commanderName)
+                ) : (
+                    <Button onClick={handleCmdrSelector}>点击选择</Button>
+                )}
             </View>
             <View>
                 <Label>舰长技能</Label>

@@ -22,14 +22,14 @@ export type ShipSpecies =
 export interface Ship {
     id: string
     // name: string
-    nation: Nation | string
-    species: ShipSpecies | string
+    nation: Nation
+    species: ShipSpecies
     tier: number
     upgrade: {}
 }
 
 export interface Commander {
-    id: string
+    // id: string
     name: string
     nation: Nation
 }
@@ -41,7 +41,7 @@ export interface Fitting {
     authorNickName: string
     authorOpenId: string
     shipId: string
-    commanderId: string
+    commanderName: string
     commanderSkill: any[]
     upgrade: any[]
     title: string
