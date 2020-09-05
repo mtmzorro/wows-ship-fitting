@@ -1,7 +1,5 @@
-import { Ship, Nation, ShipSpecies } from '../type/types'
+import { Nation, ShipSpecies, Ship } from '../type/types'
 import shipData from '../data/ship'
-import nationData from '../data/nation'
-import shipSpeciesData from '../data/shipSpecies'
 import config from '../config/config'
 
 
@@ -13,12 +11,12 @@ import config from '../config/config'
 // }
 
 export const getShips = () => {
-    const result = [ ...shipData ]
+    const result = [ ...shipData ] as Ship[]
     return result
 }
 
 export const getShipById = (id: string) => {
-    const ships = [ ...shipData ]
+    const ships = [ ...shipData ] as Ship[]
     const result = ships.find((ship) => {
         return ship.id === id
     })
@@ -26,7 +24,7 @@ export const getShipById = (id: string) => {
 }
 
 export const getShipsByNation = (nation: Nation) => {
-    const ships = [ ...shipData ]
+    const ships = [ ...shipData ] as Ship[]
     const result = ships.filter((ship) => {
         return ship.nation === nation
     })
@@ -34,7 +32,7 @@ export const getShipsByNation = (nation: Nation) => {
 }
 
 export const getShipsBySpecies = (species: ShipSpecies) => {
-    const ships = [ ...shipData ]
+    const ships = [ ...shipData ] as Ship[]
     const result = ships.filter((ship) => {
         return ship.species === species
     })
@@ -42,25 +40,15 @@ export const getShipsBySpecies = (species: ShipSpecies) => {
 }
 
 export const getShipsByTier = (tier: number) => {
-    const ships = [ ...shipData ]
+    const ships = [ ...shipData ] as Ship[]
     const result = ships.filter((ship) => {
         return ship.tier === tier
     })
     return result
 }
 
-// get 国家列表
-export const getNationList = () => {
-    return [ ...nationData ]
-}
-
-// get 舰船分类列表
-export const getShipSpeciesList = () => {
-    return [ ...shipSpeciesData ]
-}
-
 // https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/ship_previews/${id}.png
-export const getShipImageById = (id: string): string => {
+export const getShipImage = (id: string): string => {
     return `${config.imageCDNPath}/ship_previews/${id}.png`
 }
 

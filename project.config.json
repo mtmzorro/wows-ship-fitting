@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "wows-ship-fitting",
   "description": "wows ship fitting",
-  "appid": "touristappid",
+  "appid": "wx43ad4f0a5c3e86b4",
   "setting": {
     "urlCheck": true,
     "es6": false,
