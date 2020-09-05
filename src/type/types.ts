@@ -38,7 +38,8 @@ export interface Fitting {
     id: number
     createDate: number
     modifyDate: number
-    author: string
+    authorNickName: string
+    authorOpenId: string
     shipId: string
     commanderId: string
     commanderSkill: any[]
@@ -49,7 +50,13 @@ export interface Fitting {
 
 export interface User {
     id: string
-    unionID: string
+    openId: string
+    avatarUrl: string
     nickName: string
-    plans: Fitting[]
+    country: string
+    city: string
+    gender: number
+    language: string
+    province: string
+    username: string
 }

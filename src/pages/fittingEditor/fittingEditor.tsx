@@ -3,40 +3,54 @@ import Taro from '@tarojs/taro'
 import { View, Button, Text, Image, Label, Input, Textarea, Form } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { shipNameLocalize } from '../../utils/localization'
-import { Fitting } from '../../type/types'
-import { saveFitting } from '../../service/common'
-import { actions } from '../../reducers/fittingEditor'
-import useDebouce from '../../utils/useDebouce'
+import { Fitting, User } from '../../type/types'
+import { saveFitting, checkUserInfoSetting, getUserInfo } from '../../service/common'
+
+interface State {
+    fittingEditor: Fitting
+    user: User
+}
 
 const FittingEditor: React.FC = () => {
     // connect store
-    const {
-        id,
-        createDate,
-        modifyDate,
-        shipId,
-        title,
-        author,
-        commanderId,
-        commanderSkill,
-        description,
-        upgrade,
-    } = useSelector((state) => state.fittingEditor) as Fitting
+    const { fittingEditor, user } = useSelector((state) => {
+        return { fittingEditor: state.fittingEditor, user: state.user }
+    }) as State
     const dispatch = useDispatch()
 
-    const [inputTitle, setInputTitle] = useState<string>(title)
-    const [inputDescription, setInputDescription] = useState<string>(description)
-    const debouceTitle = useDebouce(inputTitle)
-    const debouceDescription = useDebouce(inputDescription)
+    const [inputTitle, setInputTitle] = useState<string>(fittingEditor.title)
+    const [inputDescription, setInputDescription] = useState<string>(fittingEditor.description)
 
-    // 同步至 store 中
+    // useEffect(() => {
+    //     checkUserInfoSetting.then((result) => {
+    //         if (!result) {
+    //             Taro.showModal({
+    //                 title: '提示',
+    //                 content: '新建装备方案保存时，需要您的用户数据，还请授权',
+    //                 success(res) {
+    //                     if (res.confirm) {
+    //                         console.log('用户点击确定')
+    //                         Taro.openSetting({
+    //                             success: function (settings) {
+    //                                 console.log(settings.authSetting)
+    //                                 // res.authSetting = {
+    //                                 //   "scope.userInfo": true,
+    //                                 //   "scope.userLocation": true
+    //                                 // }
+    //                             },
+    //                         })
+    //                     } else if (res.cancel) {
+    //                         console.log('用户点击取消')
+    //                     }
+    //                 },
+    //             })
+    //         }
+    //     })
+    // }, [])
+
     useEffect(() => {
-        const cache = {
-            title: inputTitle,
-            description: inputDescription,
-        }
-        dispatch(actions.setFittingEditor(cache))
-    }, [debouceTitle, debouceDescription])
+        checkUserInfoSetting()
+    }, [])
 
     const handleShipSelector = () => {
         Taro.navigateTo({ url: '/pages/shipSelector/shipSelector' })
@@ -45,16 +59,14 @@ const FittingEditor: React.FC = () => {
     // save
     const handleSave = () => {
         const cache = {
-            id: new Date().getTime(),
-            createDate: new Date().getTime(),
-            modifyDate: new Date().getTime(),
-            author: 'mtmzorro',
+            authorNickName: user.nickName,
+            authorOpenId: user.openId,
             commanderId: 'haru',
             commanderSkill: [1, 2, 3],
             upgrade: [2, 3, 4],
-            title: title,
-            description: description,
-            shipId: shipId,
+            title: inputTitle,
+            description: inputDescription,
+            shipId: fittingEditor.shipId,
         }
         // dispatch(setFittingEditor(cache))
         saveFitting(cache)
@@ -69,30 +81,36 @@ const FittingEditor: React.FC = () => {
     return (
         <View>
             {console.log('FittingEditor render')}
+            <View className='user'>
+                <View className='ship'>
+                    {user.openId} - {user.nickName}
+                </View>
+                <View className='commander'></View>
+            </View>
             <View className='preview'>
                 <View className='ship'></View>
                 <View className='commander'></View>
             </View>
             <View>
                 <Label>选择战舰</Label>
-                {shipId ? (
-                    shipNameLocalize(shipId)
+                {fittingEditor.shipId ? (
+                    shipNameLocalize(fittingEditor.shipId)
                 ) : (
                     <Button onClick={handleShipSelector}>点击选择</Button>
                 )}
             </View>
             <View>
                 <Label>选择舰长</Label>
-                {commanderId ? commanderId : <Button>点击选择</Button>}
+                {fittingEditor.commanderId ? fittingEditor.commanderId : <Button>点击选择</Button>}
             </View>
             <View>
                 <Label>舰长技能</Label>
-                {commanderSkill.length > 0 && commanderSkill}
+                {fittingEditor.commanderSkill.length > 0 && fittingEditor.commanderSkill}
                 <Button>点击编辑</Button>
             </View>
             <View>
                 <Label>舰船配件</Label>
-                {upgrade.length > 0 && upgrade}
+                {fittingEditor.upgrade.length > 0 && fittingEditor.upgrade}
                 <Button>点击编辑</Button>
             </View>
             <View>
