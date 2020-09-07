@@ -33,6 +33,11 @@ const FittingEditor: React.FC = () => {
         Taro.navigateTo({ url: '/pages/cmdrSelector/cmdrSelector' })
     }
 
+    const handleSkillSelector = () => {
+        Taro.navigateTo({ url: '/pages/skillSelector/skillSelector' })
+    }
+
+
     // save
     const handleSave = () => {
         const cache = {
@@ -87,7 +92,7 @@ const FittingEditor: React.FC = () => {
             <View>
                 <Label>舰长技能</Label>
                 {fittingEditor.commanderSkill.length > 0 && fittingEditor.commanderSkill}
-                <Button>点击编辑</Button>
+                <Button onClick={handleSkillSelector}>点击编辑</Button>
             </View>
             <View>
                 <Label>舰船配件</Label>
