@@ -2,6 +2,8 @@ import config from '../config/config'
 import shipLocalesData from '../locales/ship'
 import tierLocalesData from '../locales/tier'
 import cmdrLocalesData  from '../locales/commander'
+import skillLocalesData from '../locales/skill'
+
 
 // set App language
 const language = config.language
@@ -26,6 +28,30 @@ export const tierLocalize = (tier: number): string => {
     const result = tierLocalesData[tier]
     if (!result) {
         return '??'
+    }
+    return result[language]
+}
+
+export const skillNameLocalize = (id: string): string => {
+    const result = skillLocalesData[id].name
+    if (!result) {
+        return ''
+    }
+    return result[language]
+}
+
+export const skillDescriptionLocalize = (id: string): string => {
+    const result = skillLocalesData[id].description
+    if (!result) {
+        return ''
+    }
+    return result[language]
+}
+
+export const skillPerksLocalize = (id: string): string => {
+    const result = skillLocalesData[id].perks
+    if (!result) {
+        return ''
     }
     return result[language]
 }

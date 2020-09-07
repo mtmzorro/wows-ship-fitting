@@ -4,7 +4,8 @@ export default {
     'pages/fitting/fitting',
     'pages/fittingEditor/fittingEditor',
     'pages/shipSelector/shipSelector',
-    'pages/cmdrSelector/cmdrSelector'
+    'pages/cmdrSelector/cmdrSelector',
+    'pages/skillSelector/skillSelector'
   ],
   window: {
     backgroundTextStyle: 'light',

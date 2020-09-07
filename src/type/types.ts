@@ -60,3 +60,12 @@ export interface User {
     province: string
     username: string
 }
+
+export interface Skill {
+    id: string
+    name?: string
+    sort: string
+    cost: number
+    description?: string
+    perks?: string
+}
