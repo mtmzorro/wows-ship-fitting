@@ -1,0 +1,6 @@
+.skill-item{
+    border: 1px solid #9f9f9f;
+    &-selected{
+        border-color: tomato;
+    }
+}

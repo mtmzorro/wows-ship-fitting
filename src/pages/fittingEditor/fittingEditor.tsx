@@ -44,8 +44,8 @@ const FittingEditor: React.FC = () => {
             authorNickName: user.nickName,
             authorOpenId: user.openId,
             commanderName: fittingEditor.commanderName,
-            commanderSkill: [1, 2, 3],
-            upgrade: [2, 3, 4],
+            commanderSkill: fittingEditor.commanderSkill,
+            upgrade: [],
             title: inputTitle,
             description: inputDescription,
             shipId: fittingEditor.shipId,
@@ -111,7 +111,7 @@ const FittingEditor: React.FC = () => {
                 <Textarea
                     id='description'
                     name='description'
-                    placeholder='战舰装配理念'
+                    placeholder='战舰装配思路（如配件选择）'
                     value={inputDescription}
                     onInput={(e: any) => setInputDescription(e.target.value)}
                 ></Textarea>

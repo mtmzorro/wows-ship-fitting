@@ -48,6 +48,11 @@ export default function fittingEditor(state = INITIAL_STATE, action) {
                 ...state,
                 commanderName: action.payload,
             }
+        case actionType.SET_COMMANDER_SKILL:
+            return {
+                ...state,
+                commanderSkill: action.payload,
+            }
         default:
             return state
     }
@@ -71,6 +76,12 @@ export const actions = {
         return {
             type: actionType.SET_COMMANDER_NAME,
             payload: commanderName
+        }
+    },
+    setCommanderSkill: (skillList: string[][]) => {
+        return {
+            type: actionType.SET_COMMANDER_SKILL,
+            payload: skillList
         }
     },
 }

@@ -42,6 +42,7 @@
     "@tarojs/react": "3.0.7",
     "@tarojs/runtime": "3.0.7",
     "@tarojs/taro": "3.0.7",
+    "classnames": "^2.2.6",
     "leancloud-storage": "^4.6.1",
     "react": "^16.10.0",
     "react-dom": "^16.10.0",
