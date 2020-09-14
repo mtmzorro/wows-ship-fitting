@@ -1,0 +1,56 @@
+// base color
+$color-primary: #233e99 !default;
+$color-secondary: #425aaa !default;
+$color-black: #252525 !default;
+$color-dark-1: #828282 !default;
+$color-dark-2: #999 !default;
+$color-dark-3: #bcbcbc !default;
+$color-dark-4: #e9e9e9 !default;
+$color-light-1: #fcfcfc !default;
+$color-light-2: #f7f9ff !default;
+$color-light-3: #f3f3f3 !default;
+$color-white: #fff !default;
+
+// font-family
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji' !default;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace !default;
+$font-family-base: $font-family-sans-serif !default;
+
+// background-colors
+$bg-color-base: $color-white !default;
+$bg-color-light: $color-light-1 !default;
+$bg-color-selected: $color-light-2 !default;
+$bg-color-image: $color-light-3 !default;
+
+// h1-h6
+$h1-font-size: 38px !default;
+$h2-font-size: 32px !default;
+$h3-font-size: 30px !default;
+$h4-font-size: 28px !default;
+$h5-font-size: 24px !default;
+$h6-font-size: 20px !default;
+
+// text-color
+$text-color-black: $color-black !default;
+$text-color-dark-1: $color-dark-1 !default;
+$text-color-dark-2: $color-dark-2 !default;
+
+// link-color
+$link-color: $color-primary !default;
+
+// button-color
+$button-primary-bg-color: $color-primary !default;
+
+// page
+$page-padding: 0 40px !default;
+
+// shadow
+$box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12) !default;
+$box-shadow-light: 0 14px 35px rgba(0, 0, 0, 0.06) !default;
+
+// border
+$border-radius: 10px !default;
+$border-color-base: $color-dark-4 !default;

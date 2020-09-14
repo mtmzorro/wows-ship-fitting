@@ -1,4 +1,32 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixin';
+@import './listItem/listItem.scss';
+
 .index {
-  flex-direction: column;
-  width: 100%;
+    flex-direction: column;
+    background-color: $bg-color-light;
+    padding: $page-padding;
+
+    .title {
+        font-size: $h1-font-size;
+        color: $text-color-black;
+        line-height: 50px;
+        margin-bottom: 26px;
+        font-weight: bold;
+    }
+
+    .fitting-banner {
+        padding: 0;
+        margin-bottom: 40px;
+        border: 0;
+        width: auto;
+        height: 264px;
+        font-size: 0;
+        @include background('../../assets/images/fitting-banner.png');
+        border-radius: $border-radius;
+        box-shadow: $box-shadow;
+        &::after {
+            display: none;
+        }
+    }
 }
