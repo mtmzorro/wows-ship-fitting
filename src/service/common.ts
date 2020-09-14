@@ -8,12 +8,12 @@ import shipSpeciesData from '../data/shipSpecies'
 
 // get 国家列表
 export const getNationList = () => {
-    return [ ...nationData ]
+    return [...nationData]
 }
 
 // get 舰船分类列表
 export const getShipSpeciesList = () => {
-    return [ ...shipSpeciesData ]
+    return [...shipSpeciesData]
 }
 
 export const saveFitting = (fitting: Partial<Fitting>): Promise<any> => {
@@ -30,6 +30,18 @@ export const saveFitting = (fitting: Partial<Fitting>): Promise<any> => {
 
 export const queryAllFitting = (): Promise<any> => {
     return LearnCloud.queryAll('Fitting')
+}
+
+export const getFittingById = (id: string): Promise<Fitting> => {
+    const query = new AV.Query('Fitting')
+    return query.get(id).then((result) => {
+        return {
+            id: result.id,
+            createDate: result.createdAt,
+            modifyDate: result.updatedAt,
+            ...result.attributes,
+        } as Fitting
+    })
 }
 
 // Login to LearnCloud server
@@ -111,7 +123,7 @@ export const getUserInfo = () => {
             },
             fail: (error) => {
                 reject(error)
-            }
+            },
         })
     })
 }

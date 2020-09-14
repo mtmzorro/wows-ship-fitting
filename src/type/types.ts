@@ -42,7 +42,7 @@ export interface Fitting {
     authorOpenId: string
     shipId: string
     commanderName: string
-    commanderSkill: any[]
+    commanderSkill: any[][]
     upgrade: any[]
     title: string
     description: string
