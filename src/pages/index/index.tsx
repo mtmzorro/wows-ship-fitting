@@ -4,7 +4,7 @@ import { View, Button, Text, Image } from '@tarojs/components'
 import Taro, { useReady, UserInfo } from '@tarojs/taro'
 
 import { Fitting, User } from '../../type/types'
-import { getShips } from '../../service/ship'
+import { getShipImage } from '../../service/ship'
 import { shipNameLocalize } from '../../utils/localization'
 import { queryAllFitting, login } from '../../service/common'
 import { actions } from '../../reducers/user'
@@ -31,11 +31,18 @@ const Index: React.FC = () => {
 
     useEffect(() => {
         // 获取服务端 全部 Fitting
-        queryAllFitting()
-            .then((result) => {
-                console.log(result)
-            })
-            .catch((result) => {})
+        queryAllFitting().then((result: any[]) => {
+            console.log('queryAllFitting', result)
+            const cache = result.map((item) => {
+                return {
+                    id: item.id,
+                    createDate: item.createdAt,
+                    modifyDate: item.updatedAt,
+                    ...item.attributes,
+                }
+            }) as Fitting[]
+            setFittingList(cache)
+        })
     }, [])
 
     // 新建方案 需要获取用户信息授权
@@ -50,12 +57,28 @@ const Index: React.FC = () => {
         // checkUserInfoSetting()
     }
 
+    const handleFittingDetail = (id: string) => {
+        Taro.navigateTo({
+            url: `/pages/fittingDetail/fittingDetail?id=${id}`,
+        })
+    }
+
     return (
         <View className='index'>
-            
             <Button onGetUserInfo={buttonClickHandle} openType='getUserInfo'>
                 创建我的配船方案
             </Button>
+            {fittingList.map((fitting) => {
+                return (
+                    <View key={fitting.id} onClick={handleFittingDetail.bind(this, fitting.id)}>
+                        <Image src={getShipImage(fitting.shipId)} />
+                        <View>{fitting.title}</View>
+                        <View>作者：{fitting.authorNickName}</View>
+                        <View>舰长：{fitting.commanderName}</View>
+                        <View>舰船：{shipNameLocalize(fitting.shipId)}</View>
+                    </View>
+                )
+            })}
         </View>
     )
 }

@@ -1,7 +1,7 @@
 export default {
   pages: [
     'pages/index/index',
-    'pages/fitting/fitting',
+    'pages/fittingDetail/fittingDetail',
     'pages/fittingEditor/fittingEditor',
     'pages/shipSelector/shipSelector',
     'pages/cmdrSelector/cmdrSelector',
