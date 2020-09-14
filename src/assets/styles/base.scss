@@ -1,0 +1,25 @@
+@import './variables';
+
+page,
+body {
+    font-family: $font-family-base;
+    font-size: 28px;
+    height: 100%;
+    background-color: $bg-color-base;
+    color: $text-color-black;
+    box-sizing: border-box;
+}
+
+.section-title{
+    margin-bottom: 16px;
+    &-sub{
+        font-size: 20px;
+        line-height: 28px;
+        color: $text-color-dark-2;
+    }
+    &-content{
+        font-size: 32px;
+        line-height: 45px;
+        color: $text-color-black;
+    }
+}

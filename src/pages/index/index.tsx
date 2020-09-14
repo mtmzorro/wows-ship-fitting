@@ -4,10 +4,9 @@ import { View, Button, Text, Image } from '@tarojs/components'
 import Taro, { useReady, UserInfo } from '@tarojs/taro'
 
 import { Fitting, User } from '../../type/types'
-import { getShipImage } from '../../service/ship'
-import { shipNameLocalize } from '../../utils/localization'
 import { queryAllFitting, login } from '../../service/common'
 import { actions } from '../../reducers/user'
+import ListItem from './listItem/listItem'
 
 import './index.scss'
 
@@ -65,18 +64,25 @@ const Index: React.FC = () => {
 
     return (
         <View className='index'>
-            <Button onGetUserInfo={buttonClickHandle} openType='getUserInfo'>
+            <View className='title'>HELLO，指挥官！</View>
+            <Button
+                className='fitting-banner'
+                onGetUserInfo={buttonClickHandle}
+                openType='getUserInfo'
+            >
                 创建我的配船方案
             </Button>
+            <View className='section-title'>
+                <View className='section-title-sub'>Recent</View>
+                <View className='section-title-content'>近期装配方案</View>
+            </View>
             {fittingList.map((fitting) => {
                 return (
-                    <View key={fitting.id} onClick={handleFittingDetail.bind(this, fitting.id)}>
-                        <Image src={getShipImage(fitting.shipId)} />
-                        <View>{fitting.title}</View>
-                        <View>作者：{fitting.authorNickName}</View>
-                        <View>舰长：{fitting.commanderName}</View>
-                        <View>舰船：{shipNameLocalize(fitting.shipId)}</View>
-                    </View>
+                    <ListItem
+                        key={fitting.id}
+                        {...fitting}
+                        handleFittingDetail={handleFittingDetail}
+                    />
                 )
             })}
         </View>

@@ -36,8 +36,8 @@ export interface Commander {
 
 export interface Fitting {
     id: number
-    createDate: number
-    modifyDate: number
+    createDate: Date
+    modifyDate: Date
     authorNickName: string
     authorOpenId: string
     shipId: string

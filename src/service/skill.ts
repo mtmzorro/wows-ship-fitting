@@ -1,4 +1,4 @@
-import { Nation, ShipSpecies, Skill } from '../type/types'
+import { Skill } from '../type/types'
 import skillData from '../data/skill'
 import config from '../config/config'
 
@@ -31,6 +31,6 @@ export const getSkillbySort = (sort: string) => {
 }
 
 // https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/crew_commander/skills/big/icon_perk_FlightSpeedModifier.png
-export const getCommanderImage = (id: string): string => {
+export const getSkillImage = (id: string): string => {
     return `${config.imageCDNPath}/crew_commander/skills/big/icon_perk_${id}.png`
 }

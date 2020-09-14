@@ -9,8 +9,10 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black'
+    navigationBarBackgroundColor: '#FFFFFF',
+    navigationBarTitleText: '战舰工坊',
+    navigationBarTextStyle: 'black',
+    backgroundColorTop: '#FFFFFF',
+    backgroundColorBottom: '#FFFFFF'
   }
 }

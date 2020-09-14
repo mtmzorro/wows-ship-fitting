@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 
 import configStore from './store'
 
-import './app.scss'
+import './assets/styles/base.scss'
 
 const store = configStore()
 
