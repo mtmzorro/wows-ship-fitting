@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { View, Button, Text, Image, Label, Input, Textarea, Form } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { shipNameLocalize, commanderNameLocalize } from '../../utils/localization'
 import { Fitting, User } from '../../type/types'
 import { saveFitting, checkUserInfoSetting, getUserInfo } from '../../service/common'
+import './fittingEditor.scss'
+import { getShipImage } from '../../service/ship'
+import { getCommanderByName, getCommanderImage } from '../../service/commander'
+import { getSkillImage } from '../../service/skill'
+
+// verifyModal
+const verifyModal = (msg: string) => {
+    Taro.showModal({
+        title: '提示',
+        content: msg,
+        showCancel: false,
+    })
+}
 
 interface State {
     fittingEditor: Fitting
@@ -12,6 +25,7 @@ interface State {
 }
 
 const FittingEditor: React.FC = () => {
+
     // connect store
     const { fittingEditor, user } = useSelector((state) => {
         return { fittingEditor: state.fittingEditor, user: state.user }
@@ -21,9 +35,6 @@ const FittingEditor: React.FC = () => {
     const [inputTitle, setInputTitle] = useState<string>(fittingEditor.title)
     const [inputDescription, setInputDescription] = useState<string>(fittingEditor.description)
 
-    useEffect(() => {
-        checkUserInfoSetting()
-    }, [])
 
     const handleShipSelector = () => {
         Taro.navigateTo({ url: '/pages/shipSelector/shipSelector' })
@@ -37,7 +48,6 @@ const FittingEditor: React.FC = () => {
         Taro.navigateTo({ url: '/pages/skillSelector/skillSelector' })
     }
 
-
     // save
     const handleSave = () => {
         const cache = {
@@ -50,73 +60,167 @@ const FittingEditor: React.FC = () => {
             description: inputDescription,
             shipId: fittingEditor.shipId,
         }
+
+        if (!cache.shipId) {
+            return verifyModal('请选择战舰')
+        }
+        if (!cache.commanderName) {
+            return verifyModal('请选择舰长')
+        }
+        if (cache.commanderSkill[0].length <= 0) {
+            return verifyModal('请选择舰长技能')
+        }
+        if (cache.title.length <= 0) {
+            return verifyModal('请填写装配方案标题')
+        }
+        if (cache.description.length <= 0) {
+            return verifyModal('请填写装配方案详情描述')
+        }
+        if (!cache.authorNickName || !cache.authorOpenId) {
+            return verifyModal('获取微信用户名称异常')
+        }
+
+        console.log(cache)
+
         // dispatch(setFittingEditor(cache))
+        Taro.showLoading({
+            mask: true,
+            title: '装配方案保存中',
+        })
         saveFitting(cache)
             .then((result) => {
                 console.log('FittingEditor save success')
+                Taro.hideLoading()
+                Taro.showModal({
+                    title: '提示',
+                    content: '保存成功，点击确定前去查看方案并分享',
+                    showCancel: false,
+                    success: () =>{
+                        Taro.navigateTo({ url: '/pages/index/index' })
+                    }
+                })
             })
             .catch((error) => {
                 console.log('FittingEditor save error')
+                Taro.hideLoading()
+                verifyModal('保存失败，网络或者服务器未响应。')
             })
     }
 
+    const commamder = getCommanderByName(fittingEditor.commanderName)
+    const skillList = fittingEditor.commanderSkill.reduce((all, cur) => {
+        return typeof cur === 'object' ? [...all, ...cur] : [...all, cur]
+    }, [])
+
     return (
-        <View>
-            {console.log('FittingEditor render')}
-            <View className='user'>
-                <View className='ship'>
-                    {user.openId} - {user.nickName}
+        <View className='fitting-editor'>
+            <View className='section-title'>
+                <View className='section-title-sub'>Editor</View>
+                <View className='section-title-content'>编辑装配方案</View>
+            </View>
+            <View className='editor-item common-list'>
+                <View className='common-list__line preview-area'>
+                    <View className='common-list__line-container'>
+                        <View className='preview-area__bg'>
+                            {fittingEditor.shipId && (
+                                <Image
+                                    className='preview-area__ship'
+                                    src={getShipImage(fittingEditor.shipId)}
+                                />
+                            )}
+                            {commamder && (
+                                <Image
+                                    className='preview-area__commander'
+                                    src={getCommanderImage(
+                                        fittingEditor.commanderName,
+                                        commamder.nation
+                                    )}
+                                />
+                            )}
+                        </View>
+                    </View>
                 </View>
-                <View className='commander'></View>
+                <View className='common-list__line preview-selector'>
+                    <View className='common-list__line-container'>
+                        <View
+                            onClick={handleShipSelector}
+                            className='preview-selector__button common-list__activable'
+                        >
+                            <View className='line-content'>选择战舰</View>
+                            <View className='line-extra'>&gt;</View>
+                        </View>
+                        <View
+                            onClick={handleCmdrSelector}
+                            className='preview-selector__button common-list__activable'
+                        >
+                            <View className='line-content'>选择舰长</View>
+                            <View className='line-extra'>&gt;</View>
+                        </View>
+                    </View>
+                </View>
             </View>
-            <View className='preview'>
-                <View className='ship'></View>
-                <View className='commander'></View>
+            <View className='editor-item common-list'>
+                <View className='common-list__line skill-area'>
+                    <View className='common-list__line-container'>
+                        {skillList.length > 0 ? (
+                            skillList.map((skillId) => {
+                                return (
+                                    <Image
+                                        key={skillId}
+                                        className='skill-area__image'
+                                        src={getSkillImage(skillId)}
+                                    />
+                                )
+                            })
+                        ) : (
+                            <View className='line-content skill-area__text'>请点击下方选择</View>
+                        )}
+                    </View>
+                </View>
+                <View
+                    onClick={handleSkillSelector}
+                    className='common-list__line common-list__activable'
+                >
+                    <View className='common-list__line-container'>
+                        <View className='line-content'>点击选择舰长技能</View>
+                        <View className='line-extra'>&gt;</View>
+                    </View>
+                </View>
             </View>
-            <View>
-                <Label>选择战舰</Label>
-                {fittingEditor.shipId ? (
-                    shipNameLocalize(fittingEditor.shipId)
-                ) : (
-                    <Button onClick={handleShipSelector}>点击选择</Button>
-                )}
+            <View className='editor-item common-list'>
+                <View className='common-list__line'>
+                    <View className='common-list__line-container'>
+                        <View className='line-content'>
+                            <Input
+                                id='title'
+                                className='common-input line-content__input'
+                                name='title'
+                                placeholder='配置名称'
+                                value={inputTitle}
+                                onInput={(e: any) => setInputTitle(e.target.value)}
+                            />
+                        </View>
+                    </View>
+                </View>
+                <View className='common-list__line'>
+                    <View className='common-list__line-container'>
+                        <View className='line-content'>
+                            <Textarea
+                                id='description'
+                                className='common-textarea line-content__textarea'
+                                name='description'
+                                placeholder='战舰装配思路（如配件选择）'
+                                value={inputDescription}
+                                onInput={(e: any) => setInputDescription(e.target.value)}
+                            ></Textarea>
+                        </View>
+                    </View>
+                </View>
             </View>
-            <View>
-                <Label>选择舰长</Label>
-                {fittingEditor.commanderName ? (
-                    commanderNameLocalize(fittingEditor.commanderName)
-                ) : (
-                    <Button onClick={handleCmdrSelector}>点击选择</Button>
-                )}
-            </View>
-            <View>
-                <Label>舰长技能</Label>
-                {fittingEditor.commanderSkill.length > 0 && fittingEditor.commanderSkill}
-                <Button onClick={handleSkillSelector}>点击编辑</Button>
-            </View>
-            <View>
-                <Label>舰船配件</Label>
-                {fittingEditor.upgrade.length > 0 && fittingEditor.upgrade}
-                <Button>点击编辑</Button>
-            </View>
-            <View>
-                <Label>配置说明</Label>
-                <Input
-                    id='title'
-                    name='title'
-                    placeholder='配置名称'
-                    value={inputTitle}
-                    onInput={(e: any) => setInputTitle(e.target.value)}
-                ></Input>
-                <Textarea
-                    id='description'
-                    name='description'
-                    placeholder='战舰装配思路（如配件选择）'
-                    value={inputDescription}
-                    onInput={(e: any) => setInputDescription(e.target.value)}
-                ></Textarea>
-            </View>
-            <Button onClick={handleSave}>保存装配方案</Button>
+
+            <Button className='common-button common-button--primary' onClick={handleSave}>
+                保存装配方案
+            </Button>
         </View>
     )
 }

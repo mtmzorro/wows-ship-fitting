@@ -3,3 +3,24 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
+
+@mixin element-active() {
+    transition: transform 0.1s;
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+@mixin line-active() {
+    transition: background-color 0.1s;
+    &:active {
+        background-color: $color-light-3;
+    }
+}
+
+@mixin button-active() {
+    transition: opacity 0.1s;
+    &:active {
+        opacity: 0.6;
+    }
+}

@@ -26,7 +26,7 @@ const ShipSelector: React.FC = () => {
     const handleCmdrSelect = useCallback(
         (commander: Commander) => {
             dispatch(actions.setCommanderName(commander.name))
-            Taro.redirectTo({ url: '/pages/fittingEditor/fittingEditor' })
+            Taro.navigateTo({ url: '/pages/fittingEditor/fittingEditor' })
         },
         [dispatch]
     )

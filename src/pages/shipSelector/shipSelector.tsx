@@ -32,7 +32,7 @@ const ShipSelector: React.FC = () => {
     const handleShipSelect = useCallback(
         (ship: Ship) => {
             dispatch(actions.setShipId(ship.id))
-            Taro.redirectTo({ url: '/pages/fittingEditor/fittingEditor' })
+            Taro.navigateTo({ url: '/pages/fittingEditor/fittingEditor' })
         },
         [dispatch]
     )

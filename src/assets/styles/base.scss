@@ -1,25 +1,110 @@
 @import './variables';
+@import './mixin';
 
 page,
 body {
     font-family: $font-family-base;
     font-size: 28px;
     height: 100%;
-    background-color: $bg-color-base;
+    background-color: $bg-color-light;
     color: $text-color-black;
     box-sizing: border-box;
 }
 
-.section-title{
+// title
+.section-title {
     margin-bottom: 16px;
-    &-sub{
+    &-sub {
         font-size: 20px;
         line-height: 28px;
         color: $text-color-dark-2;
     }
-    &-content{
+    &-content {
         font-size: 32px;
         line-height: 45px;
         color: $text-color-black;
+    }
+}
+
+// button
+.common-button{
+    height: 80px;
+    line-height: 80px;
+    border: 0;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 32px;
+    border-radius: $border-radius;
+    &::after{
+        display: none;
+    }
+
+    &--primary{
+        color: $color-white;
+        background-color: $button-primary-bg-color;
+        box-shadow: $button-primary-shadow;
+    }
+}
+
+// input
+.common-input {
+    border: 0;
+    outline: 0;
+    &::placeholder {
+        color: $text-color-placeholder;
+    }
+    .input-placeholder {
+        color: $text-color-placeholder;
+    }
+}
+
+// textarea
+.common-textarea {
+    border: 0;
+    outline: 0;
+    &::placeholder {
+        color: $text-color-placeholder;
+    }
+    .textarea-placeholder {
+        color: $text-color-placeholder;
+    }
+}
+
+// list
+.common-list {
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    &__activable {
+        @include line-active();
+    }
+    &__line {
+        padding: 28px 22px;
+        position: relative;
+        box-sizing: border-box;
+        border-bottom: 1px solid $border-color-base;
+        &--disable {
+            color: $text-color-placeholder;
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    &__line-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .line-content {
+        line-height: 1.5;
+        margin-right: 24px;
+        flex: 1;
+        &__input {
+            width: 100%;
+        }
+        &__textarea {
+            width: 100%;
+        }
+    }
+    .line-extra {
     }
 }

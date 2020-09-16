@@ -3,29 +3,23 @@ import { Ship, Fitting } from '../type/types'
 // Actions type
 export enum actionType {
     SET_ID = 'SET_ID',
-    SET_CREATE_DATA = 'SET_CREATE_DATA',
-    SET_MODIFY_DATE = 'SET_MODIFY_DATE',
-    SET_AUTHOR = 'SET_AUTHOR',
-    SET_FITTING_NAME = 'SET_FITTING_NAME',
     SET_SHIP_ID = 'SET_SHIP_ID',
     SET_COMMANDER_NAME = 'SET_COMMANDER_NAME',
     SET_COMMANDER_SKILL = 'SET_COMMANDER_SKILL',
-    SET_UPGRADE = 'SET_UPGRADE',
-    SET_TITLE = 'SET_TITLE',
-    SET_DESCRIPTION = 'SET_DESCRIPTION',
     SET_FITTING_EDITOR = 'SET_FITTING_EDITOR',
+    RESET_FITTING_EDITOR = 'RESET_FITTING_EDITOR',
 }
 
 const INITIAL_STATE: Fitting = {
     id: 0,
-    createDate: 0,
-    modifyDate: 0,
+    createDate: new Date(),
+    modifyDate: new Date(),
     authorNickName: '',
     authorOpenId: '',
     title: '',
     shipId: '',
     commanderName: '',
-    commanderSkill: [],
+    commanderSkill: [[]],
     upgrade: [],
     description: '',
 }
@@ -36,7 +30,7 @@ export default function fittingEditor(state = INITIAL_STATE, action) {
         case actionType.SET_FITTING_EDITOR:
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
             }
         case actionType.SET_SHIP_ID:
             return {
@@ -53,6 +47,10 @@ export default function fittingEditor(state = INITIAL_STATE, action) {
                 ...state,
                 commanderSkill: action.payload,
             }
+        case actionType.RESET_FITTING_EDITOR:
+            return {
+                ...INITIAL_STATE
+            }
         default:
             return state
     }
@@ -63,25 +61,30 @@ export const actions = {
     setFittingEditor: (fitting: Partial<Fitting>) => {
         return {
             type: actionType.SET_FITTING_EDITOR,
-            payload: fitting
+            payload: fitting,
         }
     },
     setShipId: (shipId: string) => {
         return {
             type: actionType.SET_SHIP_ID,
-            payload: shipId
+            payload: shipId,
         }
     },
     setCommanderName: (commanderName: string) => {
         return {
             type: actionType.SET_COMMANDER_NAME,
-            payload: commanderName
+            payload: commanderName,
         }
     },
     setCommanderSkill: (skillList: string[][]) => {
         return {
             type: actionType.SET_COMMANDER_SKILL,
-            payload: skillList
+            payload: skillList,
+        }
+    },
+    resetFittingEditor: () => {
+        return {
+            type: actionType.RESET_FITTING_EDITOR,
         }
     },
 }

@@ -86,7 +86,7 @@ const SkillSelector: React.FC = () => {
 
     const handleStoreSkill = () => {
         dispatch(actions.setCommanderSkill(skillSelectedRef.current))
-        Taro.redirectTo({ url: '/pages/fittingEditor/fittingEditor' })
+        Taro.navigateTo({ url: '/pages/fittingEditor/fittingEditor' })
     }
 
     // const handleSelector
