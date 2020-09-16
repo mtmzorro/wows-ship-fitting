@@ -6,6 +6,7 @@ import Taro, { useReady, UserInfo } from '@tarojs/taro'
 import { Fitting, User } from '../../type/types'
 import { queryAllFitting, login } from '../../service/common'
 import { actions } from '../../reducers/user'
+import { actions as fittingEditorAtions } from '../../reducers/fittingEditor'
 import ListItem from './listItem/listItem'
 
 import './index.scss'
@@ -49,6 +50,8 @@ const Index: React.FC = () => {
         const userInfo: User = e.detail.userInfo
         if (userInfo) {
             dispatch(actions.setUserInfo(userInfo))
+            // reset FittingEditor
+            dispatch(fittingEditorAtions.resetFittingEditor())
             Taro.navigateTo({
                 url: '/pages/fittingEditor/fittingEditor?id=new',
             })

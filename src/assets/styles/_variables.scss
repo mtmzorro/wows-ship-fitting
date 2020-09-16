@@ -37,12 +37,14 @@ $h6-font-size: 20px !default;
 $text-color-black: $color-black !default;
 $text-color-dark-1: $color-dark-1 !default;
 $text-color-dark-2: $color-dark-2 !default;
+$text-color-placeholder: $color-dark-3 !default;
 
 // link-color
 $link-color: $color-primary !default;
 
 // button-color
 $button-primary-bg-color: $color-primary !default;
+$button-primary-shadow: 0 14px 35px rgba(5, 51, 159, 0.42) !default;
 
 // page
 $page-padding: 0 40px !default;

@@ -1,0 +1,73 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixin';
+
+.fitting-editor {
+    padding: $page-padding;
+    padding-top: 20px;
+    margin-bottom: 30px;
+
+    .section-title {
+        margin-bottom: 50px;
+    }
+
+    .editor-item {
+        margin-bottom: 50px;
+    }
+
+    .preview-selector {
+        padding: 0;
+        &__button {
+            padding: 28px 22px;
+            display: flex;
+            align-items: center;
+            flex: 1;
+
+            &:first-child {
+                border-right: 1px solid $border-color-base;
+            }
+        }
+    }
+
+    .preview-area {
+        &__bg {
+            flex: 1;
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+            background-color: $bg-color-image;
+        }
+
+        &__ship,
+        &__commander {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        &__commander {
+            transform: translateX(226px) translateY(35px);
+            width: 240px;
+            height: 220.8px;
+            z-index: 10;
+        }
+        &__ship {
+            transform: translateX(101px) translateY(77px);
+            width: 426px;
+            height: 250.82px;
+            z-index: 11;
+        }
+    }
+
+    .skill-area {
+        &__image {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            font-size: 0;
+            margin-right: 5px;
+        }
+        &__text {
+            color: $text-color-placeholder;
+        }
+    }
+}

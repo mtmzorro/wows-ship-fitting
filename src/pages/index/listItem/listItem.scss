@@ -7,6 +7,7 @@
     margin-bottom: 24px;
     background-color: $bg-color-base;
     border-radius: $border-radius;
+    @include element-active();
 
     .list-item-image{
         width: 280px;
@@ -16,19 +17,20 @@
         background-color: $bg-color-image;
         margin-right: 18px;
 
-        .image-commander{
+        .image-commander,
+        .image-ship{
             position: absolute;
             left: 0;
             top: 0;
+        }
+
+        .image-commander{
             transform: translateX(40px) translateY(14px);
             width: 200px;
             height: 184.8px;
             z-index: 10;
         }
         .image-ship{
-            position: absolute;
-            left: 0;
-            top: 0;
             transform: translateX(-35px) translateY(75px);
             width: 300px;
             height: 177px;
