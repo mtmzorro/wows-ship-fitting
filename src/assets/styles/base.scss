@@ -14,12 +14,12 @@ body {
 // title
 .section-title {
     margin-bottom: 16px;
-    &-sub {
+    &__sub {
         font-size: 20px;
         line-height: 28px;
         color: $text-color-dark-2;
     }
-    &-content {
+    &__content {
         font-size: 32px;
         line-height: 45px;
         color: $text-color-black;
@@ -35,14 +35,21 @@ body {
     box-sizing: border-box;
     font-size: 32px;
     border-radius: $border-radius;
+    box-shadow: $button-primary-shadow;
     &::after{
         display: none;
+    }
+
+    &--small{
+        height: 60px;
+        line-height: 60px;
+        font-size: 28px;
+        box-shadow: none;
     }
 
     &--primary{
         color: $color-white;
         background-color: $button-primary-bg-color;
-        box-shadow: $button-primary-shadow;
     }
 }
 

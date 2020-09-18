@@ -35,12 +35,15 @@ const FittingEditor: React.FC = () => {
     const [inputTitle, setInputTitle] = useState<string>(fittingEditor.title)
     const [inputDescription, setInputDescription] = useState<string>(fittingEditor.description)
 
-
+    // selectors
     const handleShipSelector = () => {
         Taro.navigateTo({ url: '/pages/shipSelector/shipSelector' })
     }
 
     const handleCmdrSelector = () => {
+        if (!fittingEditor.nation) {
+            return verifyModal('请选择先选择对应国家战舰')
+        }
         Taro.navigateTo({ url: '/pages/cmdrSelector/cmdrSelector' })
     }
 
@@ -48,17 +51,18 @@ const FittingEditor: React.FC = () => {
         Taro.navigateTo({ url: '/pages/skillSelector/skillSelector' })
     }
 
-    // save
+    // save Fitting Data
     const handleSave = () => {
         const cache = {
             authorNickName: user.nickName,
             authorOpenId: user.openId,
+            shipId: fittingEditor.shipId,
+            nation: fittingEditor.nation,
             commanderName: fittingEditor.commanderName,
             commanderSkill: fittingEditor.commanderSkill,
             upgrade: [],
             title: inputTitle,
             description: inputDescription,
-            shipId: fittingEditor.shipId,
         }
 
         if (!cache.shipId) {
@@ -80,16 +84,12 @@ const FittingEditor: React.FC = () => {
             return verifyModal('获取微信用户名称异常')
         }
 
-        console.log(cache)
-
-        // dispatch(setFittingEditor(cache))
         Taro.showLoading({
             mask: true,
             title: '装配方案保存中',
         })
         saveFitting(cache)
             .then((result) => {
-                console.log('FittingEditor save success')
                 Taro.hideLoading()
                 Taro.showModal({
                     title: '提示',
@@ -101,13 +101,11 @@ const FittingEditor: React.FC = () => {
                 })
             })
             .catch((error) => {
-                console.log('FittingEditor save error')
                 Taro.hideLoading()
                 verifyModal('保存失败，网络或者服务器未响应。')
             })
     }
 
-    const commamder = getCommanderByName(fittingEditor.commanderName)
     const skillList = fittingEditor.commanderSkill.reduce((all, cur) => {
         return typeof cur === 'object' ? [...all, ...cur] : [...all, cur]
     }, [])
@@ -115,8 +113,8 @@ const FittingEditor: React.FC = () => {
     return (
         <View className='fitting-editor'>
             <View className='section-title'>
-                <View className='section-title-sub'>Editor</View>
-                <View className='section-title-content'>编辑装配方案</View>
+                <View className='section-title__sub'>Editor</View>
+                <View className='section-title__content'>编辑装配方案</View>
             </View>
             <View className='editor-item common-list'>
                 <View className='common-list__line preview-area'>
@@ -128,12 +126,12 @@ const FittingEditor: React.FC = () => {
                                     src={getShipImage(fittingEditor.shipId)}
                                 />
                             )}
-                            {commamder && (
+                            {fittingEditor.commanderName && (
                                 <Image
                                     className='preview-area__commander'
                                     src={getCommanderImage(
                                         fittingEditor.commanderName,
-                                        commamder.nation
+                                        fittingEditor.nation
                                     )}
                                 />
                             )}

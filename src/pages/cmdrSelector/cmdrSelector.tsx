@@ -3,33 +3,24 @@ import Taro from '@tarojs/taro'
 import { View, Button, Text, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Commander, Nation } from '../../type/types'
-import { getCommandersByNation } from '../../service/commander'
-import { getNationList } from '../../service/common'
+import { getCommandersByNation, getCommanderImage } from '../../service/commander'
+import { commanderNameLocalize } from '../../utils/localization'
 import { actions } from '../../reducers/fittingEditor'
-import CmdrItem from './cmdrItem'
-
-const nationList = getNationList() as Nation[]
+import './cmdrSelector.scss'
 
 const ShipSelector: React.FC = () => {
     // connect store
-    // const shipId = useSelector(state => state.fittingEditor.shipId)
+    const curNation = useSelector((state) => state.fittingEditor.nation) as Nation
     const dispatch = useDispatch()
 
-    const [curNation, setCurNation] = useState<Nation | null>(null)
+    // const [curNation, setCurNation] = useState<Nation | null>(null)
     const [curCmdrList, setCurCmdrList] = useState<Commander[]>([])
 
-    const handleNationSelect = (nation: Nation) => {
-        setCurNation(nation)
-    }
-
     // dispatch to fittingEditor
-    const handleCmdrSelect = useCallback(
-        (commander: Commander) => {
-            dispatch(actions.setCommanderName(commander.name))
-            Taro.navigateTo({ url: '/pages/fittingEditor/fittingEditor' })
-        },
-        [dispatch]
-    )
+    const handleCmdrSelect = (commander: Commander) => {
+        dispatch(actions.setCommanderName(commander.name))
+        Taro.navigateBack({ delta: 1 })
+    }
 
     // 依赖 curNation 国家选择，查询舰长列表
     useEffect(() => {
@@ -41,35 +32,31 @@ const ShipSelector: React.FC = () => {
     }, [curNation])
 
     return (
-        <View>
-            <View>当前选择国家：{curNation}</View>
-            <View>
-                {!curNation && (
-                    <View>
-                        {nationList.map((nation) => {
-                            return (
-                                <View key={nation} onClick={handleNationSelect.bind(this, nation)}>
-                                    {nation} - 国旗
-                                </View>
-                            )
-                        })}
-                    </View>
-                )}
+        <View className='commander-selector'>
+            <View className='section-title'>
+                <View className='section-title__sub'>Commander Selector</View>
+                <View className='section-title__content'>舰长选择器</View>
             </View>
-            <View>
-                {curCmdrList.length > 0 && (
-                    <View>
-                        {curCmdrList.map((commander) => {
-                            return (
-                                <CmdrItem
-                                    key={commander.name}
-                                    commander={commander}
-                                    onSelect={handleCmdrSelect}
-                                />
-                            )
-                        })}
-                    </View>
-                )}
+            <View className='selector-list'>
+                {curCmdrList.length > 0 &&
+                    curCmdrList.map((commander) => {
+                        return (
+                            <View
+                                className='selector-list__item'
+                                key={commander.name}
+                                onClick={handleCmdrSelect.bind(this, commander)}
+                            >
+                                <View className='item__image'>
+                                    <Image className='item__image-ship'
+                                        src={getCommanderImage(commander.name, commander.nation)}
+                                    />
+                                </View>
+                                <View className='item__text'>
+                                    {commanderNameLocalize(commander.name)}
+                                </View>
+                            </View>
+                        )
+                    })}
             </View>
         </View>
     )

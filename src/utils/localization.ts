@@ -3,6 +3,8 @@ import shipLocalesData from '../locales/ship'
 import tierLocalesData from '../locales/tier'
 import cmdrLocalesData  from '../locales/commander'
 import skillLocalesData from '../locales/skill'
+import nationLocalesData from '../locales/nation'
+import shipSpeciesLocalesData from '../locales/shipSpecies'
 
 
 // set App language
@@ -20,6 +22,22 @@ export const commanderNameLocalize = (name: string): string => {
     const result = cmdrLocalesData[name]
     if (!result) {
         return name
+    }
+    return result[language]
+}
+
+export const nationLocalize = (nation: string): string => {
+    const result = nationLocalesData[nation]
+    if (!result) {
+        return '未知国家'
+    }
+    return result[language]
+}
+
+export const shipSpeciesLocalize = (shipSpecies: string): string => {
+    const result = shipSpeciesLocalesData[shipSpecies]
+    if (!result) {
+        return '未知舰种'
     }
     return result[language]
 }
