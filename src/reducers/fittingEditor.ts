@@ -1,13 +1,15 @@
-import { Ship, Fitting } from '../type/types'
+import { Ship, Fitting, Nation } from '../type/types'
 
 // Actions type
 export enum actionType {
     SET_ID = 'SET_ID',
     SET_SHIP_ID = 'SET_SHIP_ID',
+    SET_NATION = 'SET_NATION',
     SET_COMMANDER_NAME = 'SET_COMMANDER_NAME',
     SET_COMMANDER_SKILL = 'SET_COMMANDER_SKILL',
     SET_FITTING_EDITOR = 'SET_FITTING_EDITOR',
     RESET_FITTING_EDITOR = 'RESET_FITTING_EDITOR',
+    SAVE_SHIP_SELECTOR = 'SAVE_SHIP_SELECTOR',
 }
 
 const INITIAL_STATE: Fitting = {
@@ -18,6 +20,7 @@ const INITIAL_STATE: Fitting = {
     authorOpenId: '',
     title: '',
     shipId: '',
+    nation: '',
     commanderName: '',
     commanderSkill: [[]],
     upgrade: [],
@@ -37,6 +40,11 @@ export default function fittingEditor(state = INITIAL_STATE, action) {
                 ...state,
                 shipId: action.payload,
             }
+        case actionType.SET_NATION:
+            return {
+                ...state,
+                nation: action.payload,
+            }
         case actionType.SET_COMMANDER_NAME:
             return {
                 ...state,
@@ -49,7 +57,7 @@ export default function fittingEditor(state = INITIAL_STATE, action) {
             }
         case actionType.RESET_FITTING_EDITOR:
             return {
-                ...INITIAL_STATE
+                ...INITIAL_STATE,
             }
         default:
             return state
@@ -70,6 +78,12 @@ export const actions = {
             payload: shipId,
         }
     },
+    setNation: (nation: Nation) => {
+        return {
+            type: actionType.SET_NATION,
+            payload: nation,
+        }
+    },
     setCommanderName: (commanderName: string) => {
         return {
             type: actionType.SET_COMMANDER_NAME,
@@ -85,6 +99,18 @@ export const actions = {
     resetFittingEditor: () => {
         return {
             type: actionType.RESET_FITTING_EDITOR,
+        }
+    },
+    saveShipSelector: (ship: Ship) => {
+        return (dispatch, getState) => {
+            const curNation = getState().fittingEditor.nation
+
+            // 因舰长依赖 nation，nation 有变化则重置已选舰长
+            if (ship.nation !== curNation) {
+                dispatch(actions.setCommanderName(''))
+            }
+            dispatch(actions.setShipId(ship.id))
+            dispatch(actions.setNation(ship.nation))
         }
     },
 }

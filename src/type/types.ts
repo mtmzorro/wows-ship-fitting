@@ -16,8 +16,8 @@ export type ShipSpecies =
     | 'Battleship'
     | 'Cruiser'
     | 'Destroyer'
-    | 'Submarine'
-    | 'Auxillary'
+    // | 'Submarine'
+    // | 'Auxillary'
 
 export interface Ship {
     id: string
@@ -41,6 +41,7 @@ export interface Fitting {
     authorNickName: string
     authorOpenId: string
     shipId: string
+    nation: Nation | string
     commanderName: string
     commanderSkill: any[][]
     upgrade: any[]

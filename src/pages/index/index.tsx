@@ -29,21 +29,21 @@ const Index: React.FC = () => {
             })
     })
 
-    useEffect(() => {
-        // 获取服务端 全部 Fitting
-        queryAllFitting().then((result: any[]) => {
-            console.log('queryAllFitting', result)
-            const cache = result.map((item) => {
-                return {
-                    id: item.id,
-                    createDate: item.createdAt,
-                    modifyDate: item.updatedAt,
-                    ...item.attributes,
-                }
-            }) as Fitting[]
-            setFittingList(cache)
-        })
-    }, [])
+    // useEffect(() => {
+    //     // 获取服务端 全部 Fitting
+    //     queryAllFitting().then((result: any[]) => {
+    //         console.log('queryAllFitting', result)
+    //         const cache = result.map((item) => {
+    //             return {
+    //                 id: item.id,
+    //                 createDate: item.createdAt,
+    //                 modifyDate: item.updatedAt,
+    //                 ...item.attributes,
+    //             }
+    //         }) as Fitting[]
+    //         setFittingList(cache)
+    //     })
+    // }, [])
 
     // 新建方案 需要获取用户信息授权
     const buttonClickHandle = (e) => {
@@ -76,8 +76,8 @@ const Index: React.FC = () => {
                 创建我的配船方案
             </Button>
             <View className='section-title'>
-                <View className='section-title-sub'>Recent</View>
-                <View className='section-title-content'>近期装配方案</View>
+                <View className='section-title__sub'>Recent</View>
+                <View className='section-title__content'>近期装配方案</View>
             </View>
             {fittingList.map((fitting) => {
                 return (

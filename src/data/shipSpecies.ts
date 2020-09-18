@@ -3,6 +3,6 @@ export default [
     "Battleship",
     "Cruiser",
     "Destroyer",
-    "Submarine",
-    "Auxillary"
+    // "Submarine",
+    // "Auxillary"
 ]

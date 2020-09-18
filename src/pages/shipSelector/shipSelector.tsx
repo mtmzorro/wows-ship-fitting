@@ -1,12 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Button, Text, Image } from '@tarojs/components'
-import { useSelector, useDispatch } from 'react-redux'
+import { View, Button } from '@tarojs/components'
+import { useDispatch } from 'react-redux'
 import { Ship, ShipSpecies, Nation } from '../../type/types'
 import { getShipsByNation } from '../../service/ship'
 import { getNationList, getShipSpeciesList } from '../../service/common'
-import ShipItem from './shipItem'
 import { actions } from '../../reducers/fittingEditor'
+import {
+    shipNameLocalize,
+    tierLocalize,
+    nationLocalize,
+    shipSpeciesLocalize,
+} from '../../utils/localization'
+import './shipSelector.scss'
 
 const nationList = getNationList() as Nation[]
 const shipSpeciesList = getShipSpeciesList() as ShipSpecies[]
@@ -16,8 +22,8 @@ const ShipSelector: React.FC = () => {
     // const shipId = useSelector(state => state.fittingEditor.shipId)
     const dispatch = useDispatch()
 
-    const [curNation, setCurNation] = useState<Nation | null>(null)
-    const [curShipSpecies, setShipSpecies] = useState<ShipSpecies | null>(null)
+    const [curNation, setCurNation] = useState<Nation | string>('')
+    const [curShipSpecies, setShipSpecies] = useState<ShipSpecies | string>('')
     const [curShipList, setCurShipList] = useState<Ship[]>([])
 
     const handleNationSelect = (nation: Nation) => {
@@ -28,14 +34,18 @@ const ShipSelector: React.FC = () => {
         setShipSpecies(shipSpecies)
     }
 
+    const handleReset = () => {
+        setCurNation('')
+        setShipSpecies('')
+        setCurShipList([])
+    }
+
     // dispatch to fittingEditor
-    const handleShipSelect = useCallback(
-        (ship: Ship) => {
-            dispatch(actions.setShipId(ship.id))
-            Taro.navigateTo({ url: '/pages/fittingEditor/fittingEditor' })
-        },
-        [dispatch]
-    )
+    const handleShipSelect = (ship: Ship) => {
+        dispatch(actions.saveShipSelector(ship))
+        // back to fittingEditor
+        Taro.navigateBack({ delta: 1 })
+    }
 
     // curShipSpecies 最终更新，查询舰船列表
     useEffect(() => {
@@ -43,7 +53,7 @@ const ShipSelector: React.FC = () => {
             return
         }
 
-        let result = getShipsByNation(curNation)
+        let result = getShipsByNation(curNation as Nation)
         result = result
             .filter((item) => {
                 return item.species === curShipSpecies
@@ -56,45 +66,76 @@ const ShipSelector: React.FC = () => {
     }, [curShipSpecies])
 
     return (
-        <View>
-            <View>
-                当前选择国家：{curNation}，舰船类别：{curShipSpecies}
+        <View className='ship-selector'>
+            <View className='section-title'>
+                <View className='section-title__sub'>Ship Selector</View>
+                <View className='section-title__content'>舰船选择器</View>
             </View>
-            <View>
+            <View className='selector-state'>
+                <View className='selector-state__content'>
+                    当前选择：
+                    {curNation && nationLocalize(curNation)}{' '}
+                    {curShipSpecies && `> ${shipSpeciesLocalize(curShipSpecies)}`}
+                </View>
+                <View className='selector-state__ext'>
+                    <Button
+                        className='common-button common-button--primary common-button--small'
+                        size='mini'
+                        onClick={handleReset.bind(this)}
+                    >
+                        重置
+                    </Button>
+                </View>
+            </View>
+            <View className='selector-list'>
                 {!curNation && (
-                    <View>
+                    <View className='selector-list__wrap'>
                         {nationList.map((nation) => {
                             return (
-                                <View key={nation} onClick={handleNationSelect.bind(this, nation)}>
-                                    {nation} - 国旗
+                                <View
+                                    className='selector-list__item'
+                                    key={nation}
+                                    onClick={handleNationSelect.bind(this, nation)}
+                                >
+                                    <View className='item__text'>{nationLocalize(nation)}</View>
+                                    <View className='item__ext'>&gt;</View>
                                 </View>
                             )
                         })}
                     </View>
                 )}
-            </View>
-            <View>
-                {curNation && (
-                    <View>
+                {curNation && curShipList.length === 0 && (
+                    <View className='selector-list__wrap'>
                         {shipSpeciesList.map((species) => {
                             return (
                                 <View
+                                    className='selector-list__item'
                                     key={species}
                                     onClick={handleShipSpeciesSelect.bind(this, species)}
                                 >
-                                    {species} - 分类
+                                    <View className='item__text'>
+                                        {shipSpeciesLocalize(species)}
+                                    </View>
+                                    <View className='item__ext'>&gt;</View>
                                 </View>
                             )
                         })}
                     </View>
                 )}
-            </View>
-            <View>
                 {curShipList.length > 0 && (
-                    <View>
+                    <View className='selector-list__wrap'>
+                        {console.log(curShipList)}
                         {curShipList.map((ship) => {
                             return (
-                                <ShipItem key={ship.id} ship={ship} onSelect={handleShipSelect} />
+                                <View
+                                    className='selector-list__item'
+                                    key={ship.id}
+                                    onClick={handleShipSelect.bind(this, ship)}
+                                >
+                                    <View className='item__text'>
+                                        T-{tierLocalize(ship.tier)} {shipNameLocalize(ship.id)}
+                                    </View>
+                                </View>
                             )
                         })}
                     </View>
