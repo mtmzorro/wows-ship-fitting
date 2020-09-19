@@ -36,6 +36,7 @@ body {
     font-size: 32px;
     border-radius: $border-radius;
     box-shadow: $button-primary-shadow;
+    @include button-active();
     &::after{
         display: none;
     }

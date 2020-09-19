@@ -1,6 +1,54 @@
-.skill-item{
-    border: 1px solid #9f9f9f;
-    &-selected{
-        border-color: tomato;
+.skill-item {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid #fff;
+    height: 175px;
+    box-shadow: $box-shadow;
+    border-radius: $border-radius;
+    margin-bottom: 16px;
+    &--selected {
+        border-color: $border-color-secondary;
+        background-color: $bg-color-selected;
+    }
+    @include element-active();
+
+    &__icon {
+        width: 146px;
+        text-align: center;
+    }
+    .icon {
+        &__image {
+            width: 60px;
+            height: 60px;
+            display: inline-block;
+        }
+        &__sort {
+            color: $text-color-dark-1;
+            text-align: center;
+            font-size: 28px;
+            line-height: 1.5;
+        }
+    }
+
+    &__content {
+        flex: 1;
+        margin-right: 22px;
+    }
+    .content{
+        &__name{
+            font-size: 28px;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+        &__des{
+            font-size: 24px;
+            line-height: 1.5;
+            color: $text-color-dark-1;
+        }
+        &__des-prek{
+            display: none;
+            font-size: 22px;
+        }
     }
 }
