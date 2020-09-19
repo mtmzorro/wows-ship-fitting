@@ -508,7 +508,7 @@ export default {
         },
         description: {
             "zh-CN":
-                "侦察指示器将会显示目前用主炮瞄准自己的对手数量。\n\n对于航空母舰飞行中队，侦察指示器将会显示目前用对空防御瞄准自己飞机的战舰数量。",
+                "侦察指示器将会显示目前用主炮瞄准自己的对手数量。\n\n对于航空母舰飞行中队，将会显示目前用对空防御瞄准自己的战舰数量。",
             "en-US":
                 "The detection indicator will show the number of opponents currently aiming at your ship with their main battery guns.\n\nFor an aircraft carrier's squadrons, the detection indicator will show the number of ships whose AA defenses are currently firing at your planes."
         },

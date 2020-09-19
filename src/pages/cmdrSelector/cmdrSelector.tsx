@@ -47,7 +47,9 @@ const ShipSelector: React.FC = () => {
                                 onClick={handleCmdrSelect.bind(this, commander)}
                             >
                                 <View className='item__image'>
-                                    <Image className='item__image-ship'
+                                    <Image
+                                        className='item__image-ship'
+                                        lazyLoad
                                         src={getCommanderImage(commander.name, commander.nation)}
                                     />
                                 </View>

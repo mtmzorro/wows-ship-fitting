@@ -1,0 +1,37 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixin';
+@import './skillItem/skillItem.scss';
+
+.skill-selector {
+    padding-top: 20px;
+    overflow: hidden;
+
+    &__scroll{
+        height: calc(100vh - 94px);
+    }
+    &__scroll-wrap{
+        padding: $page-padding;
+        padding-bottom: 50px;
+    }
+}
+
+.selector-state {
+    display: flex;
+    padding: $page-padding;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    &__content {
+        font-size: 28px;
+        color: $text-color-primary;
+    }
+    &__ext {
+        .common-button {
+            display: block;
+        }
+    }
+}
+
+.skill-list{
+    padding-bottom: 30px;
+}
