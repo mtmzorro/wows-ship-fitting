@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Button, Text, Image, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { getSkills } from '../../service/skill'
-import SkillItem from './skillItem/skillItem'
+import SkillItem from '../../components/skillItem/skillItem'
 import { Skill } from '../../type/types'
 import { actions } from '../../reducers/fittingEditor'
 import './skillSelector.scss'
@@ -128,7 +128,7 @@ const SkillSelector: React.FC = () => {
                                 <View className='section-title'>
                                     <View className='section-title__sub'>Cost - {cost}</View>
                                     <View className='section-title__content'>
-                                        第一层{cost}点技能消耗
+                                        {cost}点技能消耗
                                     </View>
                                 </View>
                                 <View className='skill-list'>
@@ -137,6 +137,7 @@ const SkillSelector: React.FC = () => {
                                             return (
                                                 <SkillItem
                                                     key={skill.sort}
+                                                    itemType='interactive'
                                                     skill={skill}
                                                     onSelect={handleSelect}
                                                 />

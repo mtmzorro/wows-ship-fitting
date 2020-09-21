@@ -1,0 +1,51 @@
+{
+  "id": "2081686",
+  "name": "wows-ship-fitting",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "15983596",
+      "name": "首页",
+      "font_class": "index",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "16546155",
+      "name": "个人中心",
+      "font_class": "user",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "16546162",
+      "name": "设置",
+      "font_class": "setting",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "16546184",
+      "name": "搜索",
+      "font_class": "search",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "17328097",
+      "name": "back",
+      "font_class": "arrow-right",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "11887166",
+      "name": "back",
+      "font_class": "back",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}

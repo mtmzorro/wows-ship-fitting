@@ -98,7 +98,9 @@ const ShipSelector: React.FC = () => {
                                     onClick={handleNationSelect.bind(this, nation)}
                                 >
                                     <View className='item__text'>{nationLocalize(nation)}</View>
-                                    <View className='item__ext'>&gt;</View>
+                                    <View className='item__ext'>
+                                        <View className='iconfont icon-arrow-right'></View>
+                                    </View>
                                 </View>
                             )
                         })}
@@ -116,7 +118,9 @@ const ShipSelector: React.FC = () => {
                                     <View className='item__text'>
                                         {shipSpeciesLocalize(species)}
                                     </View>
-                                    <View className='item__ext'>&gt;</View>
+                                    <View className='item__ext'>
+                                        <View className='iconfont icon-arrow-right'></View>
+                                    </View>
                                 </View>
                             )
                         })}

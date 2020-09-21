@@ -1,3 +1,6 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixin';
+
 .skill-item {
     display: flex;
     align-items: center;
@@ -11,7 +14,10 @@
         border-color: $border-color-secondary;
         background-color: $bg-color-selected;
     }
-    @include element-active();
+    &--active{
+        @include element-active();
+    }
+    
 
     &__icon {
         width: 146px;
@@ -47,8 +53,30 @@
             color: $text-color-dark-1;
         }
         &__des-prek{
-            display: none;
-            font-size: 22px;
+            margin-top: 6px;
+            white-space: pre;
+            font-size: 24px;
+        }
+    }
+
+    // static 静态列表重置样式
+    &--static {
+        border: 0;
+        border-bottom: 1px solid $border-color-base;
+        box-shadow: none;
+        height: auto;
+        padding: 20px 0;
+        margin-bottom: 0;
+        &:last-child{
+            border: 0;
+        }
+
+        .skill-item__icon {
+            width: 80px;
+            margin-right: 22px;
+        }
+        .skill-item__content {
+            margin-right: 0;
         }
     }
 }

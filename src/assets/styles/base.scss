@@ -9,6 +9,9 @@ body {
     background-color: $bg-color-light;
     color: $text-color-black;
     box-sizing: border-box;
+    .iconfont {
+        font-size: 28px;
+    }
 }
 
 // title
@@ -27,7 +30,7 @@ body {
 }
 
 // button
-.common-button{
+.common-button {
     height: 80px;
     line-height: 80px;
     border: 0;
@@ -37,18 +40,18 @@ body {
     border-radius: $border-radius;
     box-shadow: $button-primary-shadow;
     @include button-active();
-    &::after{
+    &::after {
         display: none;
     }
 
-    &--small{
+    &--small {
         height: 60px;
         line-height: 60px;
         font-size: 28px;
         box-shadow: none;
     }
 
-    &--primary{
+    &--primary {
         color: $color-white;
         background-color: $button-primary-bg-color;
     }
