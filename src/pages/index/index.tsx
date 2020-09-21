@@ -29,21 +29,21 @@ const Index: React.FC = () => {
             })
     })
 
-    // useEffect(() => {
-    //     // 获取服务端 全部 Fitting
-    //     queryAllFitting().then((result: any[]) => {
-    //         console.log('queryAllFitting', result)
-    //         const cache = result.map((item) => {
-    //             return {
-    //                 id: item.id,
-    //                 createDate: item.createdAt,
-    //                 modifyDate: item.updatedAt,
-    //                 ...item.attributes,
-    //             }
-    //         }) as Fitting[]
-    //         setFittingList(cache)
-    //     })
-    // }, [])
+    useEffect(() => {
+        // 获取服务端 全部 Fitting
+        queryAllFitting().then((result: any[]) => {
+            console.log('queryAllFitting', result)
+            const cache = result.map((item) => {
+                return {
+                    id: item.id,
+                    createDate: item.createdAt,
+                    modifyDate: item.updatedAt,
+                    ...item.attributes,
+                }
+            }) as Fitting[]
+            setFittingList(cache)
+        })
+    }, [])
 
     // 新建方案 需要获取用户信息授权
     const buttonClickHandle = (e) => {

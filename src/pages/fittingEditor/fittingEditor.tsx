@@ -25,7 +25,6 @@ interface State {
 }
 
 const FittingEditor: React.FC = () => {
-
     // connect store
     const { fittingEditor, user } = useSelector((state) => {
         return { fittingEditor: state.fittingEditor, user: state.user }
@@ -95,9 +94,9 @@ const FittingEditor: React.FC = () => {
                     title: '提示',
                     content: '保存成功，点击确定前去查看方案并分享',
                     showCancel: false,
-                    success: () =>{
+                    success: () => {
                         Taro.navigateTo({ url: '/pages/index/index' })
-                    }
+                    },
                 })
             })
             .catch((error) => {
@@ -145,14 +144,18 @@ const FittingEditor: React.FC = () => {
                             className='preview-selector__button common-list__activable'
                         >
                             <View className='line-content'>选择战舰</View>
-                            <View className='line-extra'>&gt;</View>
+                            <View className='line-extra'>
+                                <View className='iconfont icon-arrow-right'></View>
+                            </View>
                         </View>
                         <View
                             onClick={handleCmdrSelector}
                             className='preview-selector__button common-list__activable'
                         >
                             <View className='line-content'>选择舰长</View>
-                            <View className='line-extra'>&gt;</View>
+                            <View className='line-extra'>
+                                <View className='iconfont icon-arrow-right'></View>
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -181,7 +184,9 @@ const FittingEditor: React.FC = () => {
                 >
                     <View className='common-list__line-container'>
                         <View className='line-content'>点击选择舰长技能</View>
-                        <View className='line-extra'>&gt;</View>
+                        <View className='line-extra'>
+                            <View className='iconfont icon-arrow-right'></View>
+                        </View>
                     </View>
                 </View>
             </View>
