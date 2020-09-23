@@ -10,6 +10,7 @@ $color-light-1: #fcfcfc !default;
 $color-light-2: #f7f9ff !default;
 $color-light-3: #f3f3f3 !default;
 $color-white: #fff !default;
+$color-red: #e93b3d !default;
 
 // font-family
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
@@ -34,6 +35,7 @@ $h5-font-size: 24px !default;
 $h6-font-size: 20px !default;
 
 // text-color
+$text-color-white: $color-white !default;
 $text-color-black: $color-black !default;
 $text-color-dark-1: $color-dark-1 !default;
 $text-color-dark-2: $color-dark-2 !default;

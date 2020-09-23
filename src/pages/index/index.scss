@@ -1,6 +1,5 @@
 @import '../../assets/styles/variables';
 @import '../../assets/styles/mixin';
-@import './listItem/listItem.scss';
 
 .index {
     flex-direction: column;
@@ -29,5 +28,9 @@
             display: none;
         }
         @include element-active();
+    }
+
+    .fitting-item {
+        margin-bottom: 24px;
     }
 }
