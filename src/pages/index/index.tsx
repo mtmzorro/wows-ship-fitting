@@ -7,7 +7,7 @@ import { Fitting, User } from '../../type/types'
 import { queryAllFitting, login } from '../../service/common'
 import { actions } from '../../reducers/user'
 import { actions as fittingEditorAtions } from '../../reducers/fittingEditor'
-import ListItem from './listItem/listItem'
+import FittingItem from '../../components/fittingItem/fittingItem'
 
 import './index.scss'
 
@@ -81,9 +81,10 @@ const Index: React.FC = () => {
             </View>
             {fittingList.map((fitting) => {
                 return (
-                    <ListItem
+                    <FittingItem
                         key={fitting.id}
                         {...fitting}
+                        itemType='card'
                         handleFittingDetail={handleFittingDetail}
                     />
                 )

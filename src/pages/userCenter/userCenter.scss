@@ -1,0 +1,60 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixin';
+
+page,
+body {
+    background-color: $bg-color-image;
+}
+
+.user-center {
+    &__top {
+        background-color: $bg-color-base;
+        margin-bottom: 20px;
+    }
+    &__top-banner {
+        height: 220px;
+        background-image: url(../../assets//images/fitting-detail-top.jpg);
+        background-position: center;
+        background-size: 100% auto;
+    }
+    &__top-user {
+        box-sizing: border-box;
+        height: 132px;
+        padding-top: 32px;
+        position: relative;
+        .top-user {
+            &__image {
+                position: absolute;
+                box-sizing: border-box;
+                left: 40px;
+                top: -57px;
+                width: 160px;
+                height: 160px;
+                border-radius: 20px;
+                box-shadow: $box-shadow;
+            }
+            &__name {
+                margin-left: 232px;
+                font-size: 32px;
+                line-height: 1.5;
+                font-weight: bold;
+            }
+        }
+    }
+
+    &__fitting {
+        box-sizing: border-box;
+        padding: $page-padding;
+        padding-top: 26px;
+        padding-bottom: 30px;
+        background-color: $bg-color-base;
+
+        .item{
+            &__swipe{
+                border-bottom: 2px solid $border-color-base;
+                height: 192px;
+            }
+        }
+        
+    }
+}

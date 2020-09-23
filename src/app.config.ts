@@ -6,6 +6,7 @@ export default {
         'pages/shipSelector/shipSelector',
         'pages/cmdrSelector/cmdrSelector',
         'pages/skillSelector/skillSelector',
+        'pages/userCenter/userCenter',
     ],
     window: {
         backgroundTextStyle: 'light',
@@ -16,13 +17,19 @@ export default {
         backgroundColorBottom: '#FFFFFF',
     },
     tabBar: {
+        color: '#999999',
+        selectedColor: '#233e99',
         list: [
             {
+                iconPath: 'assets/images/icon-index.png',
+                selectedIconPath: 'assets/images/icon-index-selected.png',
                 pagePath: 'pages/index/index',
                 text: '装配首页',
             },
             {
-                pagePath: 'pages/fittingEditor/fittingEditor',
+                iconPath: 'assets/images/icon-user.png',
+                selectedIconPath: 'assets/images/icon-user-selected.png',
+                pagePath: 'pages/userCenter/userCenter',
                 text: '我的装配',
             },
         ],

@@ -1,0 +1,140 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixin';
+
+.fitting-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    height: 260px;
+    padding: 14px 12px;
+    background-color: $bg-color-base;
+
+    .fitting-item__image {
+        width: 280px;
+        height: 232px;
+        overflow: hidden;
+        position: relative;
+        background-color: $bg-color-image;
+        margin-right: 18px;
+
+        .image {
+            &__commander,
+            &__ship {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            &__commander {
+                transform: translateX(40px) translateY(14px);
+                width: 200px;
+                height: 184.8px;
+                z-index: 10;
+            }
+            &__ship {
+                transform: translateX(-35px) translateY(75px);
+                width: 300px;
+                height: 177px;
+                z-index: 11;
+            }
+        }
+    }
+
+    .fitting-item__info {
+        flex: 1;
+
+        .info {
+            &__title {
+                padding-top: 16px;
+                font-size: 28px;
+                font-weight: 500;
+                line-height: 40px;
+                margin-bottom: 10px;
+            }
+            &__ship {
+                font-size: 24px;
+                line-height: 32px;
+                margin-bottom: 10px;
+                color: $text-color-dark-1;
+            }
+            &__ext {
+                font-size: 24px;
+                line-height: 32px;
+                padding-bottom: 13px;
+                border-bottom: 1px solid $border-color-base;
+                color: $text-color-dark-1;
+            }
+            &__skill {
+                padding: 16px 2px 0 2px;
+                height: 60px;
+                overflow: hidden;
+                display: flex;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                .image-skill {
+                    width: 60px;
+                    height: 60px;
+                    margin-right: 8rpx;
+                    font-size: 0;
+                }
+            }
+        }
+    }
+
+    // Card 型 用于首页
+    &--card {
+        box-shadow: $box-shadow-light;
+        border-radius: $border-radius;
+        border-radius: 0;
+        @include element-active();
+    }
+
+    // List 型 用于用户中心
+    &--list {
+        padding-top: 26px;
+        height: 192px;
+        box-shadow: none;
+        border-radius: 0;
+        @include line-active();
+
+        .fitting-item__image{
+            width: 160px;
+            height: 140px;
+            margin-right: 26px;
+            border-radius: $border-radius;
+
+            .image {
+             
+                &__commander {
+                    transform: translateX(15.4px) translateY(23px);
+                    width: 120px;
+                    height: 110.48px;
+                    z-index: 10;
+                }
+                &__ship {
+                    transform: translateX(-22px) translateY(50px);
+                    width: 172px;
+                    height: 101px;
+                    z-index: 11;
+                }
+            }
+
+        }
+
+        .fitting-item__info{
+            .info {
+                &__title{
+                    font-size: 28px;
+                    margin-bottom: 36px;
+                }
+                &__ext {
+                    border-bottom: none;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 24px;
+                }
+            }
+        }
+    }
+}
