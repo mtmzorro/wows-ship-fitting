@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { useDispatch } from 'react-redux'
@@ -63,6 +63,7 @@ const ShipSelector: React.FC = () => {
             })
 
         setCurShipList(result)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [curShipSpecies])
 
     return (

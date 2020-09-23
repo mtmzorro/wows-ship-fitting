@@ -1,5 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
-import Taro from '@tarojs/taro'
+import React, { useRef, useState } from 'react'
 import { View, MovableArea, MovableView, Text } from '@tarojs/components'
 import './swipeAction.scss'
 

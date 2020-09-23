@@ -70,6 +70,7 @@ const SkillItem: React.FC<Props> = (props) => {
                 </View>
             </View>
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [skill.selected, skill.id]
     )
 }
