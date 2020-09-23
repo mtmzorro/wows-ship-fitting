@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import Taro, { useRouter } from '@tarojs/taro'
-import { View, Button, Text, Image, Label, Input, Textarea, Form } from '@tarojs/components'
+import React, { useState } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Button, Image, Input, Textarea } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { shipNameLocalize, commanderNameLocalize } from '../../utils/localization'
 import { Fitting, User } from '../../type/types'
-import { saveFitting, checkUserInfoSetting, getUserInfo } from '../../service/common'
+import { saveFitting } from '../../service/common'
 import './fittingEditor.scss'
 import { getShipImage } from '../../service/ship'
-import { getCommanderByName, getCommanderImage } from '../../service/commander'
+import { getCommanderImage } from '../../service/commander'
 import { getSkillImage } from '../../service/skill'
 
 // verifyModal
@@ -29,7 +28,7 @@ const FittingEditor: React.FC = () => {
     const { fittingEditor, user } = useSelector((state) => {
         return { fittingEditor: state.fittingEditor, user: state.user }
     }) as State
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     const [inputTitle, setInputTitle] = useState<string>(fittingEditor.title)
     const [inputDescription, setInputDescription] = useState<string>(fittingEditor.description)

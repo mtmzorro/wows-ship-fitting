@@ -1,6 +1,4 @@
-/* global wx */
-// import AV from 'leancloud-storage/dist/av-weapp.js'
-import Taro, { UserInfo } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { Fitting, User } from '../type/types'
 import LearnCloud from '../utils/learnCloud'
 import AV from '../utils/leanCloud'

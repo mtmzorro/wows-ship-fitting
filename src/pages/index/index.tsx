@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { View, Button, Text, Image } from '@tarojs/components'
-import Taro, { usePullDownRefresh, useReady, UserInfo } from '@tarojs/taro'
-
+import { View, Button} from '@tarojs/components'
+import Taro, { usePullDownRefresh, useReady } from '@tarojs/taro'
 import { Fitting, User } from '../../type/types'
 import { queryRecentFitting, login } from '../../service/common'
 import { actions } from '../../reducers/user'

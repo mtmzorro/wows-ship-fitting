@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { View, Button, Text, Image } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { Commander } from '../../type/types'
 import { commanderNameLocalize } from '../../utils/localization'
 import { getCommanderImage } from '../../service/commander'

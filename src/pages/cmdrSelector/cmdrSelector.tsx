@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Button, Text, Image } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Commander, Nation } from '../../type/types'
 import { getCommandersByNation, getCommanderImage } from '../../service/commander'

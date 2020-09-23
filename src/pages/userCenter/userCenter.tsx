@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Image } from '@tarojs/components'
-import Taro, { useRouter } from '@tarojs/taro'
-import SwipeAction, { ClickType } from '../../components/swipeAction/swipeAction'
-import './userCenter.scss'
 import { Fitting } from '../../type/types'
+import SwipeAction, { ClickType } from '../../components/swipeAction/swipeAction'
 import { queryAllFitting } from '../../service/common'
 import FittingItem from '../../components/fittingItem/fittingItem'
+import './userCenter.scss'
 
 const UserCenter: React.FC = () => {
     const [fittingList, setFittingList] = useState<Fitting[]>([])

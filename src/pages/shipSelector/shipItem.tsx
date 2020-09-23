@@ -1,5 +1,5 @@
 import React, {memo} from 'react'
-import { View, Button, Text, Image } from "@tarojs/components";
+import { View } from "@tarojs/components";
 import { Ship} from '../../type/types';
 import {shipNameLocalize ,tierLocalize} from '../../utils/localization';
 
