@@ -105,10 +105,6 @@ const FittingEditor: React.FC = () => {
             })
     }
 
-    const skillList = fittingEditor.commanderSkill.reduce((all, cur) => {
-        return typeof cur === 'object' ? [...all, ...cur] : [...all, cur]
-    }, [])
-
     return (
         <View className='fitting-editor'>
             <View className='section-title'>
@@ -163,8 +159,8 @@ const FittingEditor: React.FC = () => {
             <View className='editor-item common-list'>
                 <View className='common-list__line skill-area'>
                     <View className='common-list__line-container'>
-                        {skillList.length > 0 ? (
-                            skillList.map((skillId) => {
+                        {fittingEditor.commanderSkill.length > 0 ? (
+                            fittingEditor.commanderSkill.map((skillId) => {
                                 return (
                                     <Image
                                         key={skillId}

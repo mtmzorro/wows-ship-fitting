@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { View, Button, Text, Image } from '@tarojs/components'
-import Taro, { useReady, UserInfo } from '@tarojs/taro'
+import Taro, { usePullDownRefresh, useReady, UserInfo } from '@tarojs/taro'
 
 import { Fitting, User } from '../../type/types'
-import { queryAllFitting, login } from '../../service/common'
+import { queryRecentFitting, login } from '../../service/common'
 import { actions } from '../../reducers/user'
-import { actions as fittingEditorAtions } from '../../reducers/fittingEditor'
+import { actions as fittingEditorActions } from '../../reducers/fittingEditor'
+import { actions as fittingDetailActions } from '../../reducers/fittingDetail'
 import FittingItem from '../../components/fittingItem/fittingItem'
+
 
 import './index.scss'
 
@@ -29,29 +31,38 @@ const Index: React.FC = () => {
             })
     })
 
-    useEffect(() => {
-        // 获取服务端 全部 Fitting
-        queryAllFitting().then((result: any[]) => {
+    // 获取服务端 近期 Fitting
+    const getFittingData = async () => {
+        try {
+            const result = await queryRecentFitting()
             console.log('queryAllFitting', result)
-            const cache = result.map((item) => {
-                return {
-                    id: item.id,
-                    createDate: item.createdAt,
-                    modifyDate: item.updatedAt,
-                    ...item.attributes,
-                }
-            }) as Fitting[]
-            setFittingList(cache)
-        })
+            setFittingList(result)
+        } catch (error) {
+            Taro.showToast({
+                title: '服务器或数据有问题啦，请稍后重试。',
+                icon: 'none',
+                duration: 2000,
+            })
+        }
+    }
+
+    // 初次刷新
+    useEffect(() => {
+        getFittingData()
     }, [])
 
+    // 下拉刷新
+    usePullDownRefresh(() => {
+        getFittingData()
+    })
+
     // 新建方案 需要获取用户信息授权
-    const buttonClickHandle = (e) => {
+    const handleCreateClick = (e) => {
         const userInfo: User = e.detail.userInfo
         if (userInfo) {
             dispatch(actions.setUserInfo(userInfo))
             // reset FittingEditor
-            dispatch(fittingEditorAtions.resetFittingEditor())
+            dispatch(fittingEditorActions.resetFittingEditor())
             Taro.navigateTo({
                 url: '/pages/fittingEditor/fittingEditor?id=new',
             })
@@ -59,9 +70,11 @@ const Index: React.FC = () => {
         // checkUserInfoSetting()
     }
 
-    const handleFittingDetail = (id: string) => {
+    // 打开装配详情页
+    const handleFittingDetail = (fitting: Fitting) => {
+        dispatch(fittingDetailActions.setFittingDetail(fitting))
         Taro.navigateTo({
-            url: `/pages/fittingDetail/fittingDetail?id=${id}`,
+            url: `/pages/fittingDetail/fittingDetail?id=${fitting.id}&type=read`,
         })
     }
 
@@ -70,14 +83,14 @@ const Index: React.FC = () => {
             <View className='title'>HELLO，指挥官！</View>
             <Button
                 className='fitting-banner'
-                onGetUserInfo={buttonClickHandle}
+                onGetUserInfo={handleCreateClick}
                 openType='getUserInfo'
             >
                 创建我的配船方案
             </Button>
             <View className='section-title'>
                 <View className='section-title__sub'>Recent</View>
-                <View className='section-title__content'>近期装配方案</View>
+                <View className='section-title__content'>近期云端装配</View>
             </View>
             {fittingList.map((fitting) => {
                 return (

@@ -14,15 +14,15 @@ export enum actionType {
 
 const INITIAL_STATE: Fitting = {
     id: 0,
-    createDate: new Date(),
-    modifyDate: new Date(),
+    createDate: 0,
+    modifyDate: 0,
     authorNickName: '',
     authorOpenId: '',
     title: '',
     shipId: '',
     nation: '',
     commanderName: '',
-    commanderSkill: [[]],
+    commanderSkill: [],
     upgrade: [],
     description: '',
 }
@@ -90,7 +90,7 @@ export const actions = {
             payload: commanderName,
         }
     },
-    setCommanderSkill: (skillList: string[][]) => {
+    setCommanderSkill: (skillList: string[]) => {
         return {
             type: actionType.SET_COMMANDER_SKILL,
             payload: skillList,

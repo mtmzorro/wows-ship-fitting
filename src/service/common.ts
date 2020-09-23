@@ -1,10 +1,12 @@
 /* global wx */
-import AV from 'leancloud-storage/dist/av-weapp.js'
+// import AV from 'leancloud-storage/dist/av-weapp.js'
 import Taro, { UserInfo } from '@tarojs/taro'
 import { Fitting, User } from '../type/types'
 import LearnCloud from '../utils/learnCloud'
+import AV from '../utils/leanCloud'
 import nationData from '../data/nation'
 import shipSpeciesData from '../data/shipSpecies'
+import { setStorage, getStorage } from '../utils/storage'
 
 // get 国家列表
 export const getNationList = () => {
@@ -14,6 +16,16 @@ export const getNationList = () => {
 // get 舰船分类列表
 export const getShipSpeciesList = () => {
     return [...shipSpeciesData]
+}
+
+// 解析 LeanCloud 获取到的 Fiiting 数据
+const parseFittingData = (data: any): Fitting => {
+    return {
+        id: data.id,
+        createDate: data.createdAt.getTime(),
+        modifyDate: data.updatedAt.getTime(),
+        ...data.attributes,
+    }
 }
 
 export const saveFitting = (fitting: Partial<Fitting>): Promise<any> => {
@@ -28,20 +40,38 @@ export const saveFitting = (fitting: Partial<Fitting>): Promise<any> => {
     // })
 }
 
-export const queryAllFitting = (): Promise<any> => {
-    return LearnCloud.queryAll('Fitting')
+export const queryAllFitting = async (): Promise<any> => {
+    const query = new AV.Query('Fitting')
+    query.descending('createdAt')
+    const result = await query.find()
+    return result
 }
 
-export const getFittingById = (id: string): Promise<Fitting> => {
+/**
+ * queryRecentFitting 获取最近20个方案，并本地缓存
+ */
+export const queryRecentFitting = async (): Promise<Fitting[]> => {
+    const storageResult = await getStorage('indexFittings')
+
+    if (storageResult) {
+        return storageResult
+    } else {
+        const query = new AV.Query('Fitting')
+        query.descending('createdAt')
+        query.limit(20)
+        const result = await query.find()
+        const parsedResult =  result.map((item) => parseFittingData(item))
+        // 存储并设置缓存时间 分钟
+        setStorage('indexFittings', parsedResult, 10)
+        return parsedResult
+    }
+}
+
+// getFittingById 根据 id 方案查询
+export const getFittingById = async (id: string): Promise<Fitting> => {
     const query = new AV.Query('Fitting')
-    return query.get(id).then((result) => {
-        return {
-            id: result.id,
-            createDate: result.createdAt,
-            modifyDate: result.updatedAt,
-            ...result.attributes,
-        } as Fitting
-    })
+    const result = await query.get(id)
+    return parseFittingData(result)
 }
 
 // Login to LearnCloud server
