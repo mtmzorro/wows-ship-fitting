@@ -46,7 +46,6 @@ class LearnCloud {
      */
     public static getInstance(): LearnCloud {
         if (!LearnCloud.instance) {
-            console.log('new instance')
             LearnCloud.instance = new LearnCloud()
         }
         return LearnCloud.instance

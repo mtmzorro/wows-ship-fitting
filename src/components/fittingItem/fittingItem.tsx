@@ -13,7 +13,7 @@ type Props = {
 } & {
     // card 用于 index | list 用于 userCenter
     itemType: 'card' | 'list'
-    handleFittingDetail: (id: string) => void
+    handleFittingDetail: (fitting: Fitting) => void
 }
 
 const FittingItem: React.FC<Props> = (props) => {
@@ -24,16 +24,17 @@ const FittingItem: React.FC<Props> = (props) => {
         authorNickName,
         title,
         createDate,
+        modifyDate,
         commanderSkill,
         nation,
+        authorOpenId,
+        description,
+        upgrade,
         itemType,
         handleFittingDetail,
     } = props
 
     const ship = useMemo(() => getShipById(shipId), [shipId])
-    const skillList = commanderSkill.reduce((all, cur) => {
-        return typeof cur === 'object' ? [...all, ...cur] : [...all, cur]
-    }, [])
 
     // 右侧 Fitting info：card | list 型
     const generateInfo = useMemo(() => {
@@ -48,10 +49,10 @@ const FittingItem: React.FC<Props> = (props) => {
                         <View className='info__ship'>未知舰船</View>
                     )}
                     <View className='info__ext'>
-                        {authorNickName} · {createDate.toLocaleDateString()}
+                        {authorNickName} · {new Date(createDate).toLocaleDateString()}
                     </View>
                     <View className='info__skill'>
-                        {skillList.map((skillId) => {
+                        {commanderSkill.map((skillId) => {
                             return (
                                 <Image
                                     key={skillId}
@@ -76,13 +77,15 @@ const FittingItem: React.FC<Props> = (props) => {
                                 '未知舰船'
                             )}
                         </View>
-                        <View className='info__ext-right'>{createDate.toLocaleDateString()}</View>
+                        <View className='info__ext-right'>
+                            {new Date(createDate).toLocaleDateString()}
+                        </View>
                     </View>
                 </React.Fragment>
             ),
         }[itemType]
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, itemType])
+    }, [id, itemType, modifyDate])
 
     return useMemo(() => {
         const classes = classnames('fitting-item', {
@@ -90,7 +93,25 @@ const FittingItem: React.FC<Props> = (props) => {
         })
 
         return (
-            <View className={classes} onClick={handleFittingDetail.bind(this, id)}>
+            <View
+                className={classes}
+                onClick={() => {
+                    handleFittingDetail({
+                        id,
+                        shipId,
+                        commanderName,
+                        authorNickName,
+                        title,
+                        createDate,
+                        modifyDate,
+                        commanderSkill,
+                        nation,
+                        authorOpenId,
+                        description,
+                        upgrade,
+                    })
+                }}
+            >
                 <View className='fitting-item__image image'>
                     <Image className='image__ship' lazyLoad src={getShipImage(shipId)} />
                     <Image
@@ -106,7 +127,7 @@ const FittingItem: React.FC<Props> = (props) => {
             </View>
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id])
+    }, [id, modifyDate])
 }
 
 FittingItem.defaultProps = {

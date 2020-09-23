@@ -100,7 +100,10 @@ const SkillSelector: React.FC = () => {
     }
 
     const handleStoreSkill = () => {
-        dispatch(actions.setCommanderSkill(skillSelectedRef.current))
+        const skillArray = skillSelectedRef.current.reduce((all, cur) => {
+            return typeof cur === 'object' ? [...all, ...cur] : [...all, cur]
+        }, [])
+        dispatch(actions.setCommanderSkill(skillArray))
         Taro.navigateBack({ delta: 1 })
     }
 

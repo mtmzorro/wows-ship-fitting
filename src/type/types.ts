@@ -36,14 +36,14 @@ export interface Commander {
 
 export interface Fitting {
     id: number
-    createDate: Date
-    modifyDate: Date
+    createDate: number
+    modifyDate: number
     authorNickName: string
     authorOpenId: string
     shipId: string
     nation: Nation | string
     commanderName: string
-    commanderSkill: any[][]
+    commanderSkill: any[]
     upgrade: any[]
     title: string
     description: string
