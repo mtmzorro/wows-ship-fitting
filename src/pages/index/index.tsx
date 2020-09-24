@@ -51,8 +51,9 @@ const Index: React.FC = () => {
     }, [])
 
     // 下拉刷新
-    usePullDownRefresh(() => {
-        getFittingData()
+    usePullDownRefresh(async () => {
+        await getFittingData()
+        Taro.stopPullDownRefresh()
     })
 
     // 新建方案 需要获取用户信息授权
@@ -63,7 +64,7 @@ const Index: React.FC = () => {
             // reset FittingEditor
             dispatch(fittingEditorActions.resetFittingEditor())
             Taro.navigateTo({
-                url: '/pages/fittingEditor/fittingEditor?id=new',
+                url: '/pages/fittingEditor/fittingEditor?type=new',
             })
         }
         // checkUserInfoSetting()

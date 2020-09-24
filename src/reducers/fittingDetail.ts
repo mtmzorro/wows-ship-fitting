@@ -7,7 +7,7 @@ export enum actionType {
 }
 
 const INITIAL_STATE: Fitting = {
-    id: 0,
+    id: '0',
     createDate: 0,
     modifyDate: 0,
     authorNickName: '',

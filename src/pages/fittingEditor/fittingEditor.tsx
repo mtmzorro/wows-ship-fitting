@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { View, Button, Image, Input, Textarea } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Fitting, User } from '../../type/types'
-import { saveFitting } from '../../service/common'
-import './fittingEditor.scss'
+import { saveFitting, updataFitting } from '../../service/common'
 import { getShipImage } from '../../service/ship'
 import { getCommanderImage } from '../../service/commander'
 import { getSkillImage } from '../../service/skill'
+import { actions } from '../../reducers/fittingDetail'
+import './fittingEditor.scss'
 
 // verifyModal
 const verifyModal = (msg: string) => {
@@ -18,42 +19,91 @@ const verifyModal = (msg: string) => {
     })
 }
 
+const getEnLength = (text: string) => {
+    return text.replace(/[\u4e00-\u9fa5]/g, '**').length
+}
+
 interface State {
     fittingEditor: Fitting
     user: User
 }
 
 const FittingEditor: React.FC = () => {
+    const router = useRouter()
+    // new | edit
+    const pageType = router.params.type
+
     // connect store
     const { fittingEditor, user } = useSelector((state) => {
         return { fittingEditor: state.fittingEditor, user: state.user }
     }) as State
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const [inputTitle, setInputTitle] = useState<string>(fittingEditor.title)
     const [inputDescription, setInputDescription] = useState<string>(fittingEditor.description)
 
-    // selectors
+    // router to 战舰选择器
     const handleShipSelector = () => {
         Taro.navigateTo({ url: '/pages/shipSelector/shipSelector' })
     }
-
+    // router to 舰长选择器
     const handleCmdrSelector = () => {
         if (!fittingEditor.nation) {
             return verifyModal('请选择先选择对应国家战舰')
         }
         Taro.navigateTo({ url: '/pages/cmdrSelector/cmdrSelector' })
     }
-
+    // router to 技能选择器
     const handleSkillSelector = () => {
         Taro.navigateTo({ url: '/pages/skillSelector/skillSelector' })
     }
 
+    // 数据校验
+    const verifySavingData = (cache: any): boolean => {
+        if (!cache.shipId) {
+            verifyModal('请选择战舰')
+            return false
+        }
+        if (!cache.commanderName) {
+            verifyModal('请选择舰长')
+            return false
+        }
+        if (cache.commanderSkill[0].length <= 0) {
+            verifyModal('请选择舰长技能')
+            return false
+        }
+        if (cache.title.length <= 0) {
+            verifyModal('请填写装配方案标题')
+            return false
+        }
+        if (getEnLength(cache.title) > 24) {
+            verifyModal('方案标题不能超过12个中文或24个英文')
+            return false
+        }
+        if (cache.description.length <= 0) {
+            verifyModal('请填写装配方案详情描述')
+            return false
+        }
+        if (getEnLength(cache.description) > 400) {
+            verifyModal(
+                `装配方案详情不能超过200个中文或400个英文\n当前${cache.description.length}个文字`
+            )
+            return false
+        }
+        if (!cache.authorNickName || !cache.authorOpenId) {
+            verifyModal('获取微信用户名称异常')
+            return false
+        }
+        return true
+    }
+
     // save Fitting Data
-    const handleSave = () => {
+    const handleSave = async () => {
+
         const cache = {
-            authorNickName: user.nickName,
+            id: fittingEditor.id,
             authorOpenId: user.openId,
+            authorNickName: user.nickName,
             shipId: fittingEditor.shipId,
             nation: fittingEditor.nation,
             commanderName: fittingEditor.commanderName,
@@ -63,45 +113,31 @@ const FittingEditor: React.FC = () => {
             description: inputDescription,
         }
 
-        if (!cache.shipId) {
-            return verifyModal('请选择战舰')
-        }
-        if (!cache.commanderName) {
-            return verifyModal('请选择舰长')
-        }
-        if (cache.commanderSkill[0].length <= 0) {
-            return verifyModal('请选择舰长技能')
-        }
-        if (cache.title.length <= 0) {
-            return verifyModal('请填写装配方案标题')
-        }
-        if (cache.description.length <= 0) {
-            return verifyModal('请填写装配方案详情描述')
-        }
-        if (!cache.authorNickName || !cache.authorOpenId) {
-            return verifyModal('获取微信用户名称异常')
-        }
+        // 数据校验
+        if (!verifySavingData(cache)) return
 
-        Taro.showLoading({
-            mask: true,
-            title: '装配方案保存中',
-        })
-        saveFitting(cache)
-            .then((result) => {
-                Taro.hideLoading()
-                Taro.showModal({
-                    title: '提示',
-                    content: '保存成功，点击确定前去查看方案并分享',
-                    showCancel: false,
-                    success: () => {
-                        Taro.navigateTo({ url: '/pages/index/index' })
-                    },
-                })
+        Taro.showLoading({ mask: true, title: '装配方案保存中' })
+        try {
+            // new or edit
+            const result =
+                pageType === 'new' ? await saveFitting(cache) : await updataFitting(cache)
+
+            Taro.hideLoading()
+            Taro.showModal({
+                title: '提示',
+                content: '保存成功，点击确定前去查看方案并分享',
+                showCancel: false,
+                success: () => {
+                    // 传递并跳转到 详情页
+                    dispatch(actions.setFittingDetail(result))
+                    Taro.redirectTo({ url: '/pages/fittingDetail/fittingDetail' })
+                },
             })
-            .catch((error) => {
-                Taro.hideLoading()
-                verifyModal('保存失败，网络或者服务器未响应。')
-            })
+        } catch (error) {
+            console.log(error)
+            Taro.hideLoading()
+            verifyModal('保存失败，网络或者服务器未响应。')
+        }
     }
 
     return (
@@ -193,7 +229,7 @@ const FittingEditor: React.FC = () => {
                                 id='title'
                                 className='common-input line-content__input'
                                 name='title'
-                                placeholder='配置名称'
+                                placeholder='配置名称 不超过12个字'
                                 value={inputTitle}
                                 onInput={(e: any) => setInputTitle(e.target.value)}
                             />
@@ -207,7 +243,8 @@ const FittingEditor: React.FC = () => {
                                 id='description'
                                 className='common-textarea line-content__textarea'
                                 name='description'
-                                placeholder='战舰装配思路（如配件选择）'
+                                placeholder='战舰装配思路（如配件选择），不超过200个字'
+                                maxlength={200}
                                 value={inputDescription}
                                 onInput={(e: any) => setInputDescription(e.target.value)}
                             ></Textarea>
