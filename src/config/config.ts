@@ -10,6 +10,10 @@ const config = {
         appKey: 'YxRPcCLDwAbxuzlAog0YLhDC',
         serverURL: 'https://avoscloud.com',
     },
+    dbClasses:{
+        // Fitting: 'Fitting_new'
+        Fitting: 'Fitting'
+    }
 }
 
 export default config

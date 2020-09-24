@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Taro, { usePullDownRefresh } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Fitting, User } from '../../type/types'
-import { queryFittingsByUser } from '../../service/common'
-import { actions } from '../../reducers/fittingDetail'
+import { queryFittingsByUser, deleteFittingById } from '../../service/common'
+import { actions as fittingDetailActions } from '../../reducers/fittingDetail'
+import { actions as fittingEditorActions } from '../../reducers/fittingEditor'
 import SwipeAction, { ClickType } from '../../components/swipeAction/swipeAction'
 import FittingItem from '../../components/fittingItem/fittingItem'
+import useLogin from '../../utils/useLogin'
 import './userCenter.scss'
 
 const UserCenter: React.FC = () => {
+    // 登录态 微信信息授权
+    useLogin('/pages/userCenter/userCenter', 'tabBar')
+
     // connect store
     const user: User = useSelector((state) => state.user)
     const dispatch = useDispatch()
@@ -28,7 +33,6 @@ const UserCenter: React.FC = () => {
             Taro.showToast({
                 title: '服务端数据异常，请稍后重试。',
                 icon: 'none',
-                duration: 2000,
             })
         }
     }
@@ -45,21 +49,48 @@ const UserCenter: React.FC = () => {
         Taro.stopPullDownRefresh()
     })
 
-    // 删除操作
-    const handleListItemClick = (id: string, clickType: ClickType) => {
-        console.log(id, clickType)
+    // 滑动操作按钮
+    const handleListItemClick = async (id: string, clickType: ClickType) => {
         if (clickType === 'delete') {
-            console.log('删除操作')
+            const modalResult = await Taro.showModal({ content: '确定要删除吗？\n删除后不可恢复' })
+            if (modalResult.confirm) {
+                try {
+                    await deleteFittingById(id)
+                    Taro.startPullDownRefresh()
+                } catch (error) {
+                    if (error.code === 403) {
+                        Taro.showModal({
+                            content: '删除失败，您没有权限操作该装配方案。',
+                            showCancel: false,
+                        })
+                    } else {
+                        Taro.showModal({
+                            content: '保存失败，网络或者服务器异常。',
+                            showCancel: false,
+                        })
+                    }
+                }
+            }
         }
     }
 
     // 打开装配详情页
     const handleFittingDetail = (fitting: Fitting) => {
-        dispatch(actions.setFittingDetail(fitting))
+        dispatch(fittingDetailActions.setFittingDetail(fitting))
         Taro.navigateTo({
             url: `/pages/fittingDetail/fittingDetail?id=${fitting.id}&type=edit`,
         })
     }
+
+    // 新建方案
+    const handleCreateClick = () => {
+        // reset FittingEditor
+        dispatch(fittingEditorActions.resetFittingEditor())
+        Taro.navigateTo({
+            url: '/pages/fittingEditor/fittingEditor?type=new',
+        })
+    }
+
     return (
         <View className='user-center'>
             <View className='user-center__top'>
@@ -69,30 +100,45 @@ const UserCenter: React.FC = () => {
                     <View className='top-user__name'>{user.nickName}</View>
                 </View>
             </View>
-            <View className='user-center__fitting '>
-                <View className='section-title'>
-                    <View className='section-title__sub'>Fitting List</View>
-                    <View className='section-title__content'>我的装配方案</View>
+            {fittingList.length === 0 ? (
+                <View className='user-center__empty empty'>
+                    <View className='empty__title'>装配列表&nbsp;空空如也</View>
+                    <View className='empty__ext'>{`您可以新建舰船装配\n或者下拉页面刷新数据`}</View>
+                    <View className='empty__handle'>
+                        <Button
+                            className='common-button common-button--primary empty__handle-button'
+                            onClick={handleCreateClick}
+                        >
+                            新建装配方案
+                        </Button>
+                    </View>
                 </View>
-                <View className='fitting-list'>
-                    {fittingList.map((fitting) => {
-                        return (
-                            <View key={fitting.id} className='fitting-list__item item'>
-                                <SwipeAction
-                                    onClick={handleListItemClick.bind(this, fitting.id)}
-                                    classname='item__swipe'
-                                >
-                                    <FittingItem
-                                        {...fitting}
-                                        itemType='list'
-                                        handleFittingDetail={handleFittingDetail}
-                                    />
-                                </SwipeAction>
-                            </View>
-                        )
-                    })}
+            ) : (
+                <View className='user-center__fitting'>
+                    <View className='section-title'>
+                        <View className='section-title__sub'>Fitting List</View>
+                        <View className='section-title__content'>我的装配方案</View>
+                    </View>
+                    <View className='fitting-list'>
+                        {fittingList.map((fitting) => {
+                            return (
+                                <View key={fitting.id} className='fitting-list__item item'>
+                                    <SwipeAction
+                                        onClick={handleListItemClick.bind(this, fitting.id)}
+                                        classname='item__swipe'
+                                    >
+                                        <FittingItem
+                                            {...fitting}
+                                            itemType='list'
+                                            handleFittingDetail={handleFittingDetail}
+                                        />
+                                    </SwipeAction>
+                                </View>
+                            )
+                        })}
+                    </View>
                 </View>
-            </View>
+            )}
         </View>
     )
 }

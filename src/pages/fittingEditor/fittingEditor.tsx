@@ -3,7 +3,8 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { View, Button, Image, Input, Textarea } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Fitting, User } from '../../type/types'
-import { saveFitting, updataFitting } from '../../service/common'
+import useLogin from '../../utils/useLogin'
+import { saveFitting, updateFitting } from '../../service/common'
 import { getShipImage } from '../../service/ship'
 import { getCommanderImage } from '../../service/commander'
 import { getSkillImage } from '../../service/skill'
@@ -13,7 +14,6 @@ import './fittingEditor.scss'
 // verifyModal
 const verifyModal = (msg: string) => {
     Taro.showModal({
-        title: '提示',
         content: msg,
         showCancel: false,
     })
@@ -29,6 +29,9 @@ interface State {
 }
 
 const FittingEditor: React.FC = () => {
+    // 登录态 微信信息授权
+    useLogin('/pages/fittingEditor/fittingEditor', 'page')
+    
     const router = useRouter()
     // new | edit
     const pageType = router.params.type
@@ -120,11 +123,10 @@ const FittingEditor: React.FC = () => {
         try {
             // new or edit
             const result =
-                pageType === 'new' ? await saveFitting(cache) : await updataFitting(cache)
+                pageType === 'new' ? await saveFitting(cache) : await updateFitting(cache)
 
             Taro.hideLoading()
             Taro.showModal({
-                title: '提示',
                 content: '保存成功，点击确定前去查看方案并分享',
                 showCancel: false,
                 success: () => {
@@ -136,7 +138,11 @@ const FittingEditor: React.FC = () => {
         } catch (error) {
             console.log(error)
             Taro.hideLoading()
-            verifyModal('保存失败，网络或者服务器未响应。')
+            if (error.code === 403) {
+                verifyModal('保存失败，您没有权限操作该装配方案。')
+            } else {
+                verifyModal('保存失败，网络或者服务器异常。')
+            }
         }
     }
 

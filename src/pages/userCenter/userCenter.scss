@@ -57,4 +57,34 @@ body {
         }
         
     }
+
+    &__empty{
+        box-sizing: border-box;
+        padding: $page-padding;
+        padding-top: 120px;
+        padding-bottom: 130px;
+        background-color: $bg-color-base;
+        text-align: center;
+
+        .empty{
+            
+            &__title{
+                font-size: 36px;
+                font-weight: bold;
+                line-height: 1.5;
+                margin-bottom: 18px;
+            }
+            &__ext{
+                font-size: 28px;
+                line-height: 1.5;
+                color: $text-color-dark-1;
+                white-space: pre;
+                margin-bottom: 50px;
+            }
+            &__handle-button{
+                width: 400px;
+                margin: 0 auto;
+            }
+        }
+    }
 }

@@ -3,13 +3,11 @@ import { useDispatch } from 'react-redux'
 import { View, Button} from '@tarojs/components'
 import Taro, { usePullDownRefresh, useReady } from '@tarojs/taro'
 import { Fitting, User } from '../../type/types'
-import { queryRecentFitting, login } from '../../service/common'
-import { actions } from '../../reducers/user'
+import { queryRecentFitting } from '../../service/common'
+import { actions as userActions } from '../../reducers/user'
 import { actions as fittingEditorActions } from '../../reducers/fittingEditor'
 import { actions as fittingDetailActions } from '../../reducers/fittingDetail'
 import FittingItem from '../../components/fittingItem/fittingItem'
-
-
 import './index.scss'
 
 const Index: React.FC = () => {
@@ -17,18 +15,18 @@ const Index: React.FC = () => {
     const [fittingList, setFittingList] = useState<Fitting[]>([])
 
     // ready 静默登陆
-    useReady(() => {
-        login()
-            .then((user) => {
-                const userId = user.id
-                const userOpenId = user.attributes.authData.lc_weapp.openid
-                dispatch(actions.setUserId(userId))
-                dispatch(actions.setUserOpenId(userOpenId))
-            })
-            .catch((error) => {
-                console.log(`Page Index login error`, error)
-            })
-    })
+    // useReady(() => {
+    //     login()
+    //         .then((user) => {
+    //             const userId = user.id
+    //             const userOpenId = user.attributes.authData.lc_weapp.openid
+    //             dispatch(userActions.setUserId(userId))
+    //             dispatch(userActions.setUserOpenId(userOpenId))
+    //         })
+    //         .catch((error) => {
+    //             console.log(`Page Index login error`, error)
+    //         })
+    // })
 
     // 获取服务端 近期 Fitting
     const getFittingData = async () => {
@@ -58,16 +56,11 @@ const Index: React.FC = () => {
 
     // 新建方案 需要获取用户信息授权
     const handleCreateClick = (e) => {
-        const userInfo: User = e.detail.userInfo
-        if (userInfo) {
-            dispatch(actions.setUserInfo(userInfo))
-            // reset FittingEditor
-            dispatch(fittingEditorActions.resetFittingEditor())
-            Taro.navigateTo({
-                url: '/pages/fittingEditor/fittingEditor?type=new',
-            })
-        }
-        // checkUserInfoSetting()
+        // reset FittingEditor
+        dispatch(fittingEditorActions.resetFittingEditor())
+        Taro.navigateTo({
+            url: '/pages/fittingEditor/fittingEditor?type=new',
+        })
     }
 
     // 打开装配详情页
@@ -83,8 +76,7 @@ const Index: React.FC = () => {
             <View className='title'>HELLO，指挥官！</View>
             <Button
                 className='fitting-banner'
-                onGetUserInfo={handleCreateClick}
-                openType='getUserInfo'
+                onClick={handleCreateClick}
             >
                 创建我的配船方案
             </Button>

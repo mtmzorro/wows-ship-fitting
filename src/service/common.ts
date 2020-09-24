@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import { Fitting, User } from '../type/types'
+import config from '../config/config'
 import AV from '../utils/leanCloud'
 import nationData from '../data/nation'
 import shipSpeciesData from '../data/shipSpecies'
@@ -27,20 +28,26 @@ const parseFittingData = (data: any): Fitting => {
 
 // saveFitting 保存 装配方案
 export const saveFitting = async (fitting: Partial<Fitting>): Promise<Fitting> => {
-    const DataObject = AV.Object.extend('Fitting')
+    const DataObject = AV.Object.extend(config.dbClasses.Fitting)
     const dataObject = new DataObject()
     Object.keys(fitting).forEach((key) => {
         if (key === 'id') return // id 为数据库自生成，忽略
         dataObject.set(key, fitting[key])
     })
 
+    // 设置 数据 ACL 
+    const acl = new AV.ACL();
+    acl.setPublicReadAccess(true);
+    acl.setWriteAccess(AV.User.current(), true);
+    dataObject.setACL(acl)
+
     const result = await dataObject.save()
     return parseFittingData(result)
 }
 
 // updateFitting 更新 装配方案
-export const updataFitting = async (fitting: Partial<Fitting>): Promise<Fitting> => {
-    const dataObject = AV.Object.createWithoutData('Fitting', fitting.id)
+export const updateFitting = async (fitting: Partial<Fitting>): Promise<Fitting> => {
+    const dataObject = AV.Object.createWithoutData(config.dbClasses.Fitting, fitting.id)
     Object.keys(fitting).forEach((key) => {
         // id 为数据库自生成，authorOpenId 无需更新
         if (key === 'id' || key === 'authorOpenId') return 
@@ -48,13 +55,12 @@ export const updataFitting = async (fitting: Partial<Fitting>): Promise<Fitting>
     })
 
     const result = await dataObject.save()
-    console.log(result)
     return parseFittingData(result)
 }
 
 // queryAllFitting 获取全部配装方案
 export const queryAllFitting = async (): Promise<any> => {
-    const query = new AV.Query('Fitting')
+    const query = new AV.Query(config.dbClasses.Fitting)
     query.descending('createdAt')
     const result = await query.find()
     return result
@@ -67,7 +73,7 @@ export const queryRecentFitting = async (): Promise<Fitting[]> => {
     if (storageResult) {
         return storageResult
     } else {
-        const query = new AV.Query('Fitting')
+        const query = new AV.Query(config.dbClasses.Fitting)
         query.descending('createdAt')
         query.limit(20)
         const result = await query.find()
@@ -80,7 +86,7 @@ export const queryRecentFitting = async (): Promise<Fitting[]> => {
 
 // queryAllFitting 获取全部配装方案
 export const queryFittingsByUser = async (openID: string): Promise<Fitting[]> => {
-    const query = new AV.Query('Fitting')
+    const query = new AV.Query(config.dbClasses.Fitting)
     query.equalTo('authorOpenId', openID)
     query.descending('createdAt')
     const result = await query.find()
@@ -90,93 +96,28 @@ export const queryFittingsByUser = async (openID: string): Promise<Fitting[]> =>
 
 // getFittingById 根据 id 方案查询
 export const getFittingById = async (id: string): Promise<Fitting> => {
-    const query = new AV.Query('Fitting')
+    const query = new AV.Query(config.dbClasses.Fitting)
     const result = await query.get(id)
     return parseFittingData(result)
 }
 
-// Login to LearnCloud server
+// deleteFittingById 根据 id 删除方案，服务端已做 ACL 控制
+export const deleteFittingById = async (id: string): Promise<any> => {
+    const dataObject = AV.Object.createWithoutData(config.dbClasses.Fitting, id)
+    return await dataObject.destroy()
+}
+
+// Login to LeanCloud server
 // 小程序 onLoad 时执行，无感知登录，暂不获取 UserInfo，个人页、新建时获取
-export const login = (): Promise<any> => {
-    return AV.User.loginWithMiniApp().then((user) => {
-        console.log('server login', user)
-        // this.globalData.user = user
-        return user
-
-        // wx.getUserInfo({
-        //     success: ({ userInfo }) => {
-        //         console.log('wx ', userInfo)
-        //     },
-        // })
-
-        // wx.getSetting({
-        //     success(res) {
-        //         console.log('wx setting', res.authSetting)
-        //         // res.authSetting = {
-        //         //   "scope.userInfo": true,
-        //         //   "scope.userLocation": true
-        //         // }
-        //     },
-        // })
-
-        // wx.openSetting({
-        //     success(res) {
-        //         console.log('wx setting', res.authSetting)
-        //         // res.authSetting = {
-        //         //   "scope.userInfo": true,
-        //         //   "scope.userLocation": true
-        //         // }
-        //     },
-        // })
-    })
+export const serverLogin = async (): Promise<any> => {
+    const user = await AV.User.loginWithMiniApp()
+    console.log('Server login', user)
+    return user
 }
 
-export const checkLogin = (): boolean => {
-    return AV.User.current() ? true : false
-}
-
-export const checkUserInfoSetting = (): Promise<any> => {
-    return new Promise((resolve, reject) => {
-        Taro.getSetting({
-            success(res) {
-                const isEnable = res.authSetting['scope.userInfo']
-                if (!isEnable) {
-                    // 无 UserInfo 权限，触发授权提示
-                    Taro.authorize({
-                        scope: 'scope.userInfo',
-                        success() {
-                            // 用户已经同意小程序使用获取用户信息权限，后续调用不会弹窗询问
-                            resolve(true)
-                            console.log('authorize 同意')
-                        },
-                        fail() {
-                            resolve(false)
-                            console.log('authorize 不同意')
-                        },
-                    })
-                } else {
-                    resolve(true)
-                    console.log('getSetting 已授权')
-                }
-            },
-            fail(error) {
-                reject(error)
-            },
-        })
-    })
-}
-
-export const getUserInfo = () => {
-    return new Promise((resolve, reject) => {
-        Taro.getUserInfo({
-            success: ({ userInfo }) => {
-                resolve(userInfo)
-            },
-            fail: (error) => {
-                reject(error)
-            },
-        })
-    })
+// checkServerLogin 检查登录态
+export const checkServerLogin = () => {
+    return AV.User.current()
 }
 
 // Stroage UserInfo to Server

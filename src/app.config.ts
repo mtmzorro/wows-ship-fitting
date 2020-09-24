@@ -1,6 +1,7 @@
 export default {
     pages: [
         'pages/index/index',
+        'pages/login/login',
         'pages/fittingDetail/fittingDetail',
         'pages/fittingEditor/fittingEditor',
         'pages/shipSelector/shipSelector',

@@ -45,6 +45,12 @@ export default function fittingEditor(state = INITIAL_STATE, action) {
 }
 
 export const actions = {
+    combineUserInfo: (userInfo: Partial<User>) => {
+        return {
+            type: actionType.SET_USER_INFO,
+            payload: userInfo,
+        }
+    },
     setUserInfo: (user: User) => {
         return (dispatch) => {
             // Stroage UserInfo to Server
