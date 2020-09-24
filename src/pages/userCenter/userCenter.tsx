@@ -1,47 +1,72 @@
 import React, { useState, useEffect } from 'react'
+import Taro, { usePullDownRefresh } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { Fitting } from '../../type/types'
+import { useSelector, useDispatch } from 'react-redux'
+import { Fitting, User } from '../../type/types'
+import { queryFittingsByUser } from '../../service/common'
+import { actions } from '../../reducers/fittingDetail'
 import SwipeAction, { ClickType } from '../../components/swipeAction/swipeAction'
-import { queryAllFitting } from '../../service/common'
 import FittingItem from '../../components/fittingItem/fittingItem'
 import './userCenter.scss'
 
 const UserCenter: React.FC = () => {
+    // connect store
+    const user: User = useSelector((state) => state.user)
+    const dispatch = useDispatch()
+
     const [fittingList, setFittingList] = useState<Fitting[]>([])
 
-    useEffect(() => {
-        // 获取服务端 全部 Fitting
-        queryAllFitting().then((result: any[]) => {
-            console.log('queryAllFitting', result)
-            const cache = result.map((item) => {
-                return {
-                    id: item.id,
-                    createDate: item.createdAt,
-                    modifyDate: item.updatedAt,
-                    ...item.attributes,
-                }
-            }) as Fitting[]
-            setFittingList(cache)
-        })
-    }, [])
+    const getUserFittingData = async () => {
+        Taro.showLoading({ mask: true, title: '加载数据中' })
+        try {
+            const result = await queryFittingsByUser(user.openId)
+            Taro.hideLoading()
+            setFittingList(result)
+        } catch (error) {
+            console.log(error)
+            Taro.hideLoading()
+            Taro.showToast({
+                title: '服务端数据异常，请稍后重试。',
+                icon: 'none',
+                duration: 2000,
+            })
+        }
+    }
 
+    // 初始化数据
+    useEffect(() => {
+        getUserFittingData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user.openId])
+
+    // 下拉刷新
+    usePullDownRefresh(async () => {
+        await getUserFittingData()
+        Taro.stopPullDownRefresh()
+    })
+
+    // 删除操作
     const handleListItemClick = (id: string, clickType: ClickType) => {
         console.log(id, clickType)
         if (clickType === 'delete') {
             console.log('删除操作')
         }
     }
-    const handleFittingDetail = () => {}
+
+    // 打开装配详情页
+    const handleFittingDetail = (fitting: Fitting) => {
+        dispatch(actions.setFittingDetail(fitting))
+        Taro.navigateTo({
+            url: `/pages/fittingDetail/fittingDetail?id=${fitting.id}&type=edit`,
+        })
+    }
     return (
         <View className='user-center'>
             <View className='user-center__top'>
                 <View className='user-center__top-banner'></View>
                 <View className='user-center__top-user top-user'>
-                    <Image
-                        className='top-user__image'
-                        src='https://avatar-static.segmentfault.com/556/099/556099345-596cba02b2ff8_big64'
-                    />
-                    <View className='top-user__name'>mTmzorro 荆棘谷</View>
+                    <Image className='top-user__image' src={user.avatarUrl} />
+                    <View className='top-user__name'>{user.nickName}</View>
                 </View>
             </View>
             <View className='user-center__fitting '>

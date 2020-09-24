@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro'
 import { Fitting, User } from '../type/types'
-import LearnCloud from '../utils/learnCloud'
 import AV from '../utils/leanCloud'
 import nationData from '../data/nation'
 import shipSpeciesData from '../data/shipSpecies'
@@ -20,24 +19,40 @@ export const getShipSpeciesList = () => {
 const parseFittingData = (data: any): Fitting => {
     return {
         id: data.id,
-        createDate: data.createdAt.getTime(),
-        modifyDate: data.updatedAt.getTime(),
+        createDate: data.createdAt ? data.createdAt.getTime(): 0,
+        modifyDate: data.updatedAt ? data.updatedAt.getTime(): 0,
         ...data.attributes,
     }
 }
 
-export const saveFitting = (fitting: Partial<Fitting>): Promise<any> => {
-    return LearnCloud.save('Fitting', fitting)
-    // return new Promise((resolve) => {
-    //     learnCloud.save('Fitting', fitting).then((result) => {
-    //         console.log('saveFitting save success')
-    //         resolve(result)
-    //     }).catch((error) => {
-    //         console.log('saveFitting save error', error)
-    //     })
-    // })
+// saveFitting 保存 装配方案
+export const saveFitting = async (fitting: Partial<Fitting>): Promise<Fitting> => {
+    const DataObject = AV.Object.extend('Fitting')
+    const dataObject = new DataObject()
+    Object.keys(fitting).forEach((key) => {
+        if (key === 'id') return // id 为数据库自生成，忽略
+        dataObject.set(key, fitting[key])
+    })
+
+    const result = await dataObject.save()
+    return parseFittingData(result)
 }
 
+// updateFitting 更新 装配方案
+export const updataFitting = async (fitting: Partial<Fitting>): Promise<Fitting> => {
+    const dataObject = AV.Object.createWithoutData('Fitting', fitting.id)
+    Object.keys(fitting).forEach((key) => {
+        // id 为数据库自生成，authorOpenId 无需更新
+        if (key === 'id' || key === 'authorOpenId') return 
+        dataObject.set(key, fitting[key])
+    })
+
+    const result = await dataObject.save()
+    console.log(result)
+    return parseFittingData(result)
+}
+
+// queryAllFitting 获取全部配装方案
 export const queryAllFitting = async (): Promise<any> => {
     const query = new AV.Query('Fitting')
     query.descending('createdAt')
@@ -45,9 +60,7 @@ export const queryAllFitting = async (): Promise<any> => {
     return result
 }
 
-/**
- * queryRecentFitting 获取最近20个方案，并本地缓存
- */
+// queryRecentFitting 获取最近20个方案，并本地缓存
 export const queryRecentFitting = async (): Promise<Fitting[]> => {
     const storageResult = await getStorage('indexFittings')
 
@@ -58,11 +71,21 @@ export const queryRecentFitting = async (): Promise<Fitting[]> => {
         query.descending('createdAt')
         query.limit(20)
         const result = await query.find()
-        const parsedResult =  result.map((item) => parseFittingData(item))
+        const parsedResult = result.map((item) => parseFittingData(item))
         // 存储并设置缓存时间 分钟
         setStorage('indexFittings', parsedResult, 10)
         return parsedResult
     }
+}
+
+// queryAllFitting 获取全部配装方案
+export const queryFittingsByUser = async (openID: string): Promise<Fitting[]> => {
+    const query = new AV.Query('Fitting')
+    query.equalTo('authorOpenId', openID)
+    query.descending('createdAt')
+    const result = await query.find()
+    const parsedResult = result.map((item) => parseFittingData(item))
+    return parsedResult
 }
 
 // getFittingById 根据 id 方案查询

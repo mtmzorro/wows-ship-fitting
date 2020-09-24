@@ -18,7 +18,7 @@ interface State {
 
 const FittingDetail: React.FC = () => {
     const router = useRouter()
-    // read | editor 
+    // read | edit 
     const pageType = router.params.type
 
     // connect Store
@@ -30,7 +30,7 @@ const FittingDetail: React.FC = () => {
     const buttonEditorHandle = () => {
         dispatch(actions.setFittingEditor(fittingDetail))
         Taro.redirectTo({
-            url: '/pages/fittingEditor/fittingEditor?id=12312s',
+            url: '/pages/fittingEditor/fittingEditor?type=edit',
         })
     }
 
