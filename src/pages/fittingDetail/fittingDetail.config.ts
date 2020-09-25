@@ -5,5 +5,6 @@ export default {
     navigationBarTextStyle: 'white',
     backgroundColorTop: '#FFFFFF',
     backgroundColorBottom: '#FFFFFF',
+    enableShareAppMessage: true,
 }
   

@@ -5,32 +5,31 @@
     padding: $page-padding;
     padding-top: 20px;
     padding-bottom: 60px;
-
 }
 
-.selector-state{
+.selector-state {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 14px;
-    &__content{
+    &__content {
         font-size: 28px;
         color: $text-color-primary;
     }
-    &__ext{
-        .common-button{
+    &__ext {
+        .common-button {
             display: block;
         }
     }
 }
 
-.selector-list{
+.selector-list {
     border-radius: $border-radius;
     box-shadow: $box-shadow;
-    &__wrap{
+    &__wrap {
         padding: 0 22px;
     }
-    &__item{
+    &__item {
         padding: 28px 22px;
         box-sizing: border-box;
         border-bottom: 1px solid $border-color-base;
@@ -41,15 +40,23 @@
         }
         @include line-active();
     }
+    &__item.ship-list {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
 
-    .item{
+    .item {
         &__text,
-        &__ext{
+        &__ext {
             line-height: 1.5;
         }
-        &__text{
+        &__text {
             flex: 1;
             margin-right: 20px;
+        }
+        &__ext-ship {
+            width: 115px;
+            height: 67.71px;
         }
     }
 }

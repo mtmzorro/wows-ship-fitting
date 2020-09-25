@@ -97,8 +97,8 @@ export const queryFittingsByUser = async (openID: string): Promise<Fitting[]> =>
     return parsedResult
 }
 
-// getFittingById 根据 id 方案查询
-export const getFittingById = async (id: string): Promise<Fitting> => {
+// queryFittingById 根据 id 方案查询
+export const queryFittingById = async (id: string): Promise<Fitting> => {
     const query = new AV.Query(config.dbClasses.Fitting)
 
     const result = await query.get(id)

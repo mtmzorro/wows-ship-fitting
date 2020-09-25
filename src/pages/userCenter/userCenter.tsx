@@ -39,9 +39,11 @@ const UserCenter: React.FC = () => {
 
     // 初始化数据
     useEffect(() => {
-        getUserFittingData()
+        if (isLogin) {
+            getUserFittingData()
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.openId])
+    }, [isLogin])
 
     // 下拉刷新
     usePullDownRefresh(async () => {

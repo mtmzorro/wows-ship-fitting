@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View, Button, Image } from '@tarojs/components'
 import { useDispatch } from 'react-redux'
 import { Ship, ShipSpecies, Nation } from '../../type/types'
-import { getShipsByNation } from '../../service/ship'
+import { getShipsByNation, getShipImage } from '../../service/ship'
 import { getNationList, getShipSpeciesList } from '../../service/common'
 import { actions } from '../../reducers/fittingEditor'
 import {
@@ -59,7 +59,7 @@ const ShipSelector: React.FC = () => {
                 return item.species === curShipSpecies
             })
             .sort((a, b) => {
-                return a.tier - b.tier
+                return  b.tier - a.tier
             })
 
         setCurShipList(result)
@@ -133,12 +133,15 @@ const ShipSelector: React.FC = () => {
                         {curShipList.map((ship) => {
                             return (
                                 <View
-                                    className='selector-list__item'
+                                    className='selector-list__item ship-list'
                                     key={ship.id}
                                     onClick={handleShipSelect.bind(this, ship)}
                                 >
                                     <View className='item__text'>
                                         T-{tierLocalize(ship.tier)} {shipNameLocalize(ship.id)}
+                                    </View>
+                                    <View className='item__ext'>
+                                        <Image className='item__ext-ship' lazyLoad src={getShipImage(ship.id)} />
                                     </View>
                                 </View>
                             )
