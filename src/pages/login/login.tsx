@@ -3,7 +3,7 @@ import { View, Button } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { useDispatch } from 'react-redux'
 import { actions } from '../../reducers/user'
-import { saveSeverUserInfo } from '../../service/common'
+import { saveServerUserInfo } from '../../service/common'
 import './login.scss'
 
 const Login: React.FC = () => {
@@ -20,9 +20,9 @@ const Login: React.FC = () => {
 
         if (!userInfo) return // 未授权返回
 
-        // 授权 存储 UserInfo ，并存储到 Sever 用户表
+        // 授权 存储 UserInfo ，并存储到 server 用户表
         dispatch(actions.setUserInfo(userInfo))
-        saveSeverUserInfo(userInfo)
+        saveServerUserInfo(userInfo)
 
         // 返回重定向目标
         if (redirectType === 'tabBar') {

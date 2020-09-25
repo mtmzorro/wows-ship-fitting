@@ -29,12 +29,12 @@ interface State {
 }
 
 const FittingEditor: React.FC = () => {
+    // 登录态 微信信息授权
+    const isLogin = useLogin('/pages/fittingEditor/fittingEditor', 'page')
+
     const router = useRouter()
     // new | edit
     const pageType = router.params.type
-
-    // 登录态 微信信息授权
-    const isLogin = useLogin('/pages/fittingEditor/fittingEditor', 'page')
 
     // connect store
     const { fittingEditor, user } = useSelector((state) => {
