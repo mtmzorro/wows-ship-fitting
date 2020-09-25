@@ -1,11 +1,10 @@
 import { User } from '../type/types'
-import { stroageUserInfo } from '../service/common'
 
 // Actions type
 export enum actionType {
     SET_USER_ID = 'SET_USER_ID',
     SET_USER_OPEN_ID = 'SET_USER_OPEN_ID',
-    SET_USER_INFO = 'SET_USER_INFO',
+    SET_USER = 'SET_USER',
 }
 
 const INITIAL_STATE: User = {
@@ -24,7 +23,7 @@ const INITIAL_STATE: User = {
 // Reducer
 export default function fittingEditor(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case actionType.SET_USER_INFO:
+        case actionType.SET_USER:
             return {
                 ...state,
                 ...action.payload,
@@ -45,21 +44,16 @@ export default function fittingEditor(state = INITIAL_STATE, action) {
 }
 
 export const actions = {
-    combineUserInfo: (userInfo: Partial<User>) => {
+    setUserInfo: (userInfo: Partial<User>) => {
         return {
-            type: actionType.SET_USER_INFO,
+            type: actionType.SET_USER,
             payload: userInfo,
         }
     },
-    setUserInfo: (user: User) => {
-        return (dispatch) => {
-            // Stroage UserInfo to Server
-            stroageUserInfo(user).then((result) => {
-                dispatch({
-                    type: actionType.SET_USER_INFO,
-                    payload: user,
-                })
-            })
+    setUser: (user: User) => {
+        return {
+            type: actionType.SET_USER,
+            payload: user,
         }
     },
     setUserId: (id: string) => {

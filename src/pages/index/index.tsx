@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { View, Button} from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 import Taro, { usePullDownRefresh, useReady } from '@tarojs/taro'
 import { Fitting, User } from '../../type/types'
 import { queryRecentFitting } from '../../service/common'
@@ -74,10 +74,7 @@ const Index: React.FC = () => {
     return (
         <View className='index'>
             <View className='title'>HELLO，指挥官！</View>
-            <Button
-                className='fitting-banner'
-                onClick={handleCreateClick}
-            >
+            <Button className='fitting-banner' onClick={handleCreateClick}>
                 创建我的配船方案
             </Button>
             <View className='section-title'>

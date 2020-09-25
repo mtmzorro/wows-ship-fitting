@@ -62,6 +62,7 @@ export const updateFitting = async (fitting: Partial<Fitting>): Promise<Fitting>
 export const queryAllFitting = async (): Promise<any> => {
     const query = new AV.Query(config.dbClasses.Fitting)
     query.descending('createdAt')
+    
     const result = await query.find()
     return result
 }
@@ -76,6 +77,7 @@ export const queryRecentFitting = async (): Promise<Fitting[]> => {
         const query = new AV.Query(config.dbClasses.Fitting)
         query.descending('createdAt')
         query.limit(20)
+
         const result = await query.find()
         const parsedResult = result.map((item) => parseFittingData(item))
         // 存储并设置缓存时间 分钟
@@ -89,6 +91,7 @@ export const queryFittingsByUser = async (openID: string): Promise<Fitting[]> =>
     const query = new AV.Query(config.dbClasses.Fitting)
     query.equalTo('authorOpenId', openID)
     query.descending('createdAt')
+
     const result = await query.find()
     const parsedResult = result.map((item) => parseFittingData(item))
     return parsedResult
@@ -97,6 +100,7 @@ export const queryFittingsByUser = async (openID: string): Promise<Fitting[]> =>
 // getFittingById 根据 id 方案查询
 export const getFittingById = async (id: string): Promise<Fitting> => {
     const query = new AV.Query(config.dbClasses.Fitting)
+
     const result = await query.get(id)
     return parseFittingData(result)
 }
@@ -120,8 +124,8 @@ export const checkServerLogin = () => {
     return AV.User.current()
 }
 
-// Stroage UserInfo to Server
-export const stroageUserInfo = (userInfo: User): Promise<any> => {
+// saveSever wx.UserInfo to Server
+export const saveSeverUserInfo = (userInfo: Partial<User>): Promise<any> => {
     const user = AV.User.current()
     return user.set(userInfo).save()
 }
