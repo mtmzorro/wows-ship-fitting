@@ -13,7 +13,7 @@ import './userCenter.scss'
 
 const UserCenter: React.FC = () => {
     // 登录态 微信信息授权
-    useLogin('/pages/userCenter/userCenter', 'tabBar')
+    const isLogin = useLogin('/pages/fittingEditor/fittingEditor', 'page')
 
     // connect store
     const user: User = useSelector((state) => state.user)
@@ -91,6 +91,9 @@ const UserCenter: React.FC = () => {
         })
     }
 
+    if (!isLogin) {
+        return <View className='user-center'></View>
+    }
     return (
         <View className='user-center'>
             <View className='user-center__top'>

@@ -1,0 +1,42 @@
+@import '../../assets/styles/variables';
+@import '../../assets/styles/mixin';
+
+page,
+body {
+    background-color: $bg-color-base;
+}
+
+.login{
+    height: 100vh;
+    position: relative;
+
+    &__wrap{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-250px, -400px);
+        width: 520px;
+        text-align: center;
+        line-height: 1.5;
+    }
+    &__image{
+        width: 430px;
+        height: 242px;
+        @include background('../../assets/images/login-info.png');
+        margin: 0 auto;
+        margin-bottom: 36px;
+    }
+    &__title{
+        font-size: 36px;
+        margin-bottom: 16px;
+    }
+    &__ext{
+        font-size: 28px;
+        color: $text-color-dark-1;
+        margin-bottom: 62px;
+        white-space: pre-line;
+    }
+    &__handle{
+        text-align: center;
+    }
+}

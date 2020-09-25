@@ -1,7 +1,8 @@
 import Taro, { useReady } from '@tarojs/taro'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../reducers/user'
-import { checkServerLogin, serverLogin } from '../service/common'
+import { checkServerLogin, serverLogin, saveSeverUserInfo } from '../service/common'
 import { User } from '../type/types'
 
 /**
@@ -9,30 +10,23 @@ import { User } from '../type/types'
  * @param value 防抖目标
  * @param delay 延时
  */
-const useLogin = (redirectUrl: string, redirectType: 'page' | 'tabBar') => {
+const useLogin = (redirectUrl: string, redirectType: 'page' | 'tabBar'): boolean => {
+    const [isLogin, setIsLogin] = useState(false)
     const dispatch = useDispatch()
     const userStore: User = useSelector((state) => state.user)
 
     // 获取 UserInfo 微信授权验证相关操作
     const handleUserInfo = async () => {
         try {
-            /** 
-             *  向 store 存储 微信相关数据
-                userInfo.nickName
-                userInfo.avatarUrl
-                userInfo.gender //性别 0：未知、1：男、2：女
-                userInfo.province
-                userInfo.city
-                userInfo.country
-             */
+            // 可获取字段 nickName avatarUrl gender province city country
             const { userInfo } = await Taro.getUserInfo()
-            // 已授权 存储 userInfo 数据，有变化则更新 store
-            if (
-                userStore.nickName !== userInfo.nickName ||
-                userStore.avatarUrl !== userInfo.avatarUrl
-            ) {
-                dispatch(actions.combineUserInfo(userInfo))
+
+            // 已授权 存储 userInfo 数据，有变化则更新 store，并存储到 Sever 用户表
+            if (userStore.nickName !== userInfo.nickName || userStore.avatarUrl !== userInfo.avatarUrl) {
+                dispatch(actions.setUserInfo(userInfo))
+                saveSeverUserInfo(userInfo)
             }
+            return true
         } catch (error) {
             // 未授权 跳转 login 授权页
             Taro.redirectTo({
@@ -57,19 +51,32 @@ const useLogin = (redirectUrl: string, redirectType: 'page' | 'tabBar') => {
         // 获取 Server 登录态
         const user = checkServerLogin()
         console.log('当前用户 Server 登录态', user)
+        Taro.showLoading({ title: '加载中...', mask: true })
 
         if (user) {
-            // 已登录
+            // Server 已登录
             handleUserId(user)
-            handleUserInfo()
+            const result = await handleUserInfo()
+            
+            if (result) {
+                Taro.hideLoading()
+                setIsLogin(true)
+            }
         } else {
-            // 未登录 静默登录
+            // Server 未登录 静默登录
             try {
                 const userResult = await serverLogin()
+
                 // 登录后 存储 userId userOpenId 数据
                 handleUserId(userResult)
-                handleUserInfo()
+                const result = await handleUserInfo()
+
+                if (result) {
+                    Taro.hideLoading()
+                    setIsLogin(true)
+                }
             } catch (error) {
+                Taro.hideLoading()
                 Taro.showToast({
                     title: '服务端返回异常，请检查网络或重试',
                     icon: 'none',
@@ -77,6 +84,8 @@ const useLogin = (redirectUrl: string, redirectType: 'page' | 'tabBar') => {
             }
         }
     })
+
+    return isLogin
 }
 
 export default useLogin

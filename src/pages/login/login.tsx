@@ -3,6 +3,8 @@ import { View, Button } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { useDispatch } from 'react-redux'
 import { actions } from '../../reducers/user'
+import { saveSeverUserInfo } from '../../service/common'
+import './login.scss'
 
 const Login: React.FC = () => {
     const router = useRouter()
@@ -11,13 +13,17 @@ const Login: React.FC = () => {
     const redirectUrl = router.params.redirectUrl
     const redirectType = router.params.redirectType
 
-    // button onGetUserInfo 获取用户授权弹窗 
+    // button onGetUserInfo 获取用户授权弹窗
     // https://developers.weixin.qq.com/community/develop/doc/000aee01f98fc0cbd4b6ce43b56c01
     const handleLogin = (e) => {
         const userInfo = e.detail.userInfo
+
         if (!userInfo) return // 未授权返回
-        // 授权 存储 UserInfo
-        dispatch(actions.combineUserInfo(userInfo))
+
+        // 授权 存储 UserInfo ，并存储到 Sever 用户表
+        dispatch(actions.setUserInfo(userInfo))
+        saveSeverUserInfo(userInfo)
+
         // 返回重定向目标
         if (redirectType === 'tabBar') {
             Taro.switchTab({ url: redirectUrl })
@@ -27,7 +33,7 @@ const Login: React.FC = () => {
     }
 
     return (
-        <View className='Login'>
+        <View className='login'>
             <View className='login__wrap'>
                 <View className='login__image'></View>
                 <View className='login__title'>程序需要您的授权</View>
