@@ -1,6 +1,6 @@
 export default {
   navigationBarBackgroundColor: '#FFFFFF',
-  navigationBarTitleText: '我的装配',
+  navigationBarTitleText: '授权',
   navigationBarTextStyle: 'black',
   backgroundColorTop: '#FFFFFF',
   backgroundColorBottom: '#FFFFFF'

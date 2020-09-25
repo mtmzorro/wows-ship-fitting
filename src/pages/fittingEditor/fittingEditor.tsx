@@ -71,7 +71,7 @@ const FittingEditor: React.FC = () => {
             verifyModal('请选择舰长')
             return false
         }
-        if (cache.commanderSkill[0].length <= 0) {
+        if (cache.commanderSkill.length <= 0) {
             verifyModal('请选择舰长技能')
             return false
         }

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { View, Button } from '@tarojs/components'
-import Taro, { usePullDownRefresh, useReady } from '@tarojs/taro'
-import { Fitting, User } from '../../type/types'
+import Taro, { usePullDownRefresh } from '@tarojs/taro'
+import { Fitting } from '../../type/types'
 import { queryRecentFitting } from '../../service/common'
-import { actions as userActions } from '../../reducers/user'
 import { actions as fittingEditorActions } from '../../reducers/fittingEditor'
 import { actions as fittingDetailActions } from '../../reducers/fittingDetail'
 import FittingItem from '../../components/fittingItem/fittingItem'
@@ -13,20 +12,6 @@ import './index.scss'
 const Index: React.FC = () => {
     const dispatch = useDispatch()
     const [fittingList, setFittingList] = useState<Fitting[]>([])
-
-    // ready 静默登陆
-    // useReady(() => {
-    //     login()
-    //         .then((user) => {
-    //             const userId = user.id
-    //             const userOpenId = user.attributes.authData.lc_weapp.openid
-    //             dispatch(userActions.setUserId(userId))
-    //             dispatch(userActions.setUserOpenId(userOpenId))
-    //         })
-    //         .catch((error) => {
-    //             console.log(`Page Index login error`, error)
-    //         })
-    // })
 
     // 获取服务端 近期 Fitting
     const getFittingData = async () => {
@@ -70,6 +55,11 @@ const Index: React.FC = () => {
             url: `/pages/fittingDetail/fittingDetail?id=${fitting.id}&type=read`,
         })
     }
+
+    // 配置微信分享
+    Taro.showShareMenu({
+        withShareTicket: true,
+    })
 
     return (
         <View className='index'>

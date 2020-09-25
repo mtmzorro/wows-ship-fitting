@@ -47,7 +47,7 @@ export const actions = {
             payload: fitting,
         }
     },
-    resetFittingEditor: () => {
+    resetFittingDetail: () => {
         return {
             type: actionType.RESET_FITTING_DETAIL,
         }
