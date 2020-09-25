@@ -13,7 +13,7 @@ import './userCenter.scss'
 
 const UserCenter: React.FC = () => {
     // 登录态 微信信息授权
-    const isLogin = useLogin('/pages/fittingEditor/fittingEditor', 'page')
+    const isLogin = useLogin('/pages/index/index', 'tabBar')
 
     // connect store
     const user: User = useSelector((state) => state.user)

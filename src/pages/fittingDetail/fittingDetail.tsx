@@ -11,6 +11,7 @@ import { commanderNameLocalize, shipNameLocalize } from '../../utils/localizatio
 import SkillItem from '../../components/skillItem/skillItem'
 import { actions as fittingEditorActions } from '../../reducers/fittingEditor'
 import { actions as fittingDetailActions } from '../../reducers/fittingDetail'
+import NavBar from '../../components/navBar/navBar'
 import './fittingDetail.scss'
 
 interface State {
@@ -75,6 +76,7 @@ const FittingDetail: React.FC = () => {
 
     return (
         <View className='fitting-detail'>
+            <NavBar />
             {fittingDetail.id && (
                 <React.Fragment>
                     <View className='detail-top'>
