@@ -57,7 +57,6 @@ const SwipeAction: React.FC<Props> = (props) => {
     }
     return (
         <View className={`swipe-action ${classname}`}>
-            {console.log('swipe-action render')}
             <View className='swipe-action__item item'>
                 <MovableArea className='item__movable-area'>
                     <MovableView
