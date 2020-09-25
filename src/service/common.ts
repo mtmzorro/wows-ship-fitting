@@ -124,8 +124,8 @@ export const checkServerLogin = () => {
     return AV.User.current()
 }
 
-// saveSever wx.UserInfo to Server
-export const saveSeverUserInfo = (userInfo: Partial<User>): Promise<any> => {
+// saveServer wx.UserInfo to Server
+export const saveServerUserInfo = (userInfo: Partial<User>): Promise<any> => {
     const user = AV.User.current()
     return user.set(userInfo).save()
 }
