@@ -1,11 +1,10 @@
 import config from '../config/config'
 import shipLocalesData from '../locales/ship'
 import tierLocalesData from '../locales/tier'
-import cmdrLocalesData  from '../locales/commander'
+import cmdrLocalesData from '../locales/commander'
 import skillLocalesData from '../locales/skill'
 import nationLocalesData from '../locales/nation'
 import shipSpeciesLocalesData from '../locales/shipSpecies'
-
 
 // set App language
 const language = config.language
@@ -21,7 +20,11 @@ export const shipNameLocalize = (id: string): string => {
 export const commanderNameLocalize = (name: string): string => {
     const result = cmdrLocalesData[name]
     if (!result) {
-        return name
+        if (name.includes('base')) {
+            return '通用舰长'
+        } else {
+            return name
+        }
     }
     return result[language]
 }
