@@ -88,9 +88,7 @@ const FittingEditor: React.FC = () => {
             return false
         }
         if (getEnLength(cache.description) > 400) {
-            verifyModal(
-                `装配方案详情不能超过200个中文或400个英文\n当前${cache.description.length}个文字`
-            )
+            verifyModal(`装配方案详情不能超过200个中文或400个英文\n当前${cache.description.length}个文字`)
             return false
         }
         if (!cache.authorNickName || !cache.authorOpenId) {
@@ -102,7 +100,6 @@ const FittingEditor: React.FC = () => {
 
     // save Fitting Data
     const handleSave = async () => {
-
         const cache = {
             id: fittingEditor.id,
             authorOpenId: user.openId,
@@ -122,8 +119,7 @@ const FittingEditor: React.FC = () => {
         Taro.showLoading({ mask: true, title: '装配方案保存中' })
         try {
             // new or edit
-            const result =
-                pageType === 'new' ? await saveFitting(cache) : await updateFitting(cache)
+            const result = pageType === 'new' ? await saveFitting(cache) : await updateFitting(cache)
 
             Taro.hideLoading()
             Taro.showModal({
@@ -160,18 +156,12 @@ const FittingEditor: React.FC = () => {
                     <View className='common-list__line-container'>
                         <View className='preview-area__bg'>
                             {fittingEditor.shipId && (
-                                <Image
-                                    className='preview-area__ship'
-                                    src={getShipImage(fittingEditor.shipId)}
-                                />
+                                <Image className='preview-area__ship' src={getShipImage(fittingEditor.shipId)} />
                             )}
                             {fittingEditor.commanderName && (
                                 <Image
                                     className='preview-area__commander'
-                                    src={getCommanderImage(
-                                        fittingEditor.commanderName,
-                                        fittingEditor.nation
-                                    )}
+                                    src={getCommanderImage(fittingEditor.commanderName, fittingEditor.nation)}
                                 />
                             )}
                         </View>
@@ -181,6 +171,7 @@ const FittingEditor: React.FC = () => {
                     <View className='common-list__line-container'>
                         <View
                             onClick={handleShipSelector}
+                            id='ship-selector'
                             className='preview-selector__button common-list__activable'
                         >
                             <View className='line-content'>选择战舰</View>
@@ -190,6 +181,7 @@ const FittingEditor: React.FC = () => {
                         </View>
                         <View
                             onClick={handleCmdrSelector}
+                            id='commander-selector'
                             className='preview-selector__button common-list__activable'
                         >
                             <View className='line-content'>选择舰长</View>
@@ -206,11 +198,7 @@ const FittingEditor: React.FC = () => {
                         {fittingEditor.commanderSkill.length > 0 ? (
                             fittingEditor.commanderSkill.map((skillId) => {
                                 return (
-                                    <Image
-                                        key={skillId}
-                                        className='skill-area__image'
-                                        src={getSkillImage(skillId)}
-                                    />
+                                    <Image key={skillId} className='skill-area__image' src={getSkillImage(skillId)} />
                                 )
                             })
                         ) : (
@@ -220,6 +208,7 @@ const FittingEditor: React.FC = () => {
                 </View>
                 <View
                     onClick={handleSkillSelector}
+                    id='skill-selector'
                     className='common-list__line common-list__activable'
                 >
                     <View className='common-list__line-container'>
@@ -262,7 +251,7 @@ const FittingEditor: React.FC = () => {
                 </View>
             </View>
 
-            <Button className='common-button common-button--primary' onClick={handleSave}>
+            <Button id='fitting-submit' className='common-button common-button--primary' onClick={handleSave}>
                 保存装配方案
             </Button>
         </View>

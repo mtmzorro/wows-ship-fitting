@@ -89,7 +89,7 @@ const FittingDetail: React.FC = () => {
                         </View>
                     </View>
                     <View className='detail-content'>
-                        <View className='detail-content__section section'>
+                        <View className='detail-content__section section detail-content__main'>
                             <View className='section__line'>
                                 <View className='section__line-label'>方案</View>
                                 <View className='section__line-content'>{fittingDetail.title}</View>
@@ -109,7 +109,7 @@ const FittingDetail: React.FC = () => {
                                 <View className='section__line-content'>{fittingDetail.authorNickName}</View>
                             </View>
                         </View>
-                        <View className='detail-content__section section'>
+                        <View className='detail-content__section section detail-content__skill'>
                             <View className='section__title'>
                                 <View className='section__title-content'>舰长技能</View>
                                 <View className='section__title-ext'>Tips: 以下数据为基础加成</View>
@@ -121,11 +121,11 @@ const FittingDetail: React.FC = () => {
                                 })}
                             </View>
                         </View>
-                        <View className='detail-content__section section'>
+                        <View className='detail-content__section section detail-content__description'>
                             <View className='section__title'>装配思路</View>
                             <View className='section__description'>{fittingDetail.description}</View>
                         </View>
-                        <View className='detail-content__section section'>
+                        <View className='detail-content__section section detail-content__time'>
                             <View className='section__title'>更新时间</View>
                             <View className='section__time'>{new Date(fittingDetail.modifyDate).toLocaleString()}</View>
                         </View>

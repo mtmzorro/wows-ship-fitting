@@ -79,6 +79,7 @@ export const queryRecentFitting = async (): Promise<Fitting[]> => {
         query.limit(20)
 
         const result = await query.find()
+        console.log('result', result)
         const parsedResult = result.map((item) => parseFittingData(item))
         // 存储并设置缓存时间 分钟
         setStorage('indexFittings', parsedResult, 10)
