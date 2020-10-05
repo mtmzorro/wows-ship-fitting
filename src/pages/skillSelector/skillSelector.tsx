@@ -67,9 +67,7 @@ const SkillSelector: React.FC = () => {
                 })
                 return
             }
-            skillSelectedRef.current[skill.cost - 1] = skillSelectedRef.current[
-                skill.cost - 1
-            ].filter((item) => {
+            skillSelectedRef.current[skill.cost - 1] = skillSelectedRef.current[skill.cost - 1].filter((item) => {
                 return item !== skill.id
             })
 
@@ -107,8 +105,6 @@ const SkillSelector: React.FC = () => {
         Taro.navigateBack({ delta: 1 })
     }
 
-    // const handleSelector
-
     return (
         <View className='skill-selector'>
             <View className='selector-state'>
@@ -127,12 +123,10 @@ const SkillSelector: React.FC = () => {
                 <View className='skill-selector__scroll-wrap'>
                     {skillCostLevelRef.current.map((cost) => {
                         return (
-                            <View key={cost}>
+                            <View key={cost} id={'skill-level-' + cost}>
                                 <View className='section-title'>
                                     <View className='section-title__sub'>Cost - {cost}</View>
-                                    <View className='section-title__content'>
-                                        {cost}点技能消耗
-                                    </View>
+                                    <View className='section-title__content'>{cost}点技能消耗</View>
                                 </View>
                                 <View className='skill-list'>
                                     {skillList.map((skill) => {
@@ -153,6 +147,7 @@ const SkillSelector: React.FC = () => {
                     })}
 
                     <Button
+                        id='skill-submit'
                         className='common-button common-button--primary'
                         onClick={handleStoreSkill}
                     >

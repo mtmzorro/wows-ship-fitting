@@ -1,0 +1,61 @@
+{
+    "results": [
+        {
+            "description": "测试装配1描述",
+            "updatedAt": "2020-09-21T11:05:34.451Z",
+            "authorNickName": "test_user_1",
+            "objectId": "objectId_test_1",
+            "createdAt": "2020-09-25T11:05:34.451Z",
+            "title": "测试装配1-标题",
+            "upgrade": [],
+            "commanderSkill": [
+                "PriorityTargetModifier",
+                "MainGunsRotationModifier",
+                "TorpedoAlertnessModifier",
+                "CentralAirDefenceModifier"
+            ],
+            "authorOpenId": "openId_Test",
+            "commanderName": "Azur_Itsen",
+            "shipId": "PZSD104",
+            "nation": "Pan_Asia"
+        },
+        {
+            "description": "测试约克公爵2-描述",
+            "updatedAt": "2020-09-24T12:35:23.192Z",
+            "authorNickName": "test_user_2",
+            "objectId": "objectId_test_2",
+            "createdAt": "2020-09-24T10:32:44.881Z",
+            "title": "测试约克公爵2-标题",
+            "upgrade": [],
+            "commanderSkill": [
+                "PriorityTargetModifier",
+                "AllSkillsCooldownModifier",
+                "SuperintendentModifier",
+                "VisibilityModifier"
+            ],
+            "authorOpenId": "objectId_test_2",
+            "commanderName": "CUNNINGHAM",
+            "shipId": "PBSB527",
+            "nation": "United_Kingdom"
+        },
+        {
+            "description": "测试装配3-描述",
+            "updatedAt": "2020-09-24T10:34:20.027Z",
+            "authorNickName": "test_user_1",
+            "objectId": "objectId_test_3",
+            "createdAt": "2020-09-24T09:00:08.779Z",
+            "title": "测试装配3-描述",
+            "upgrade": [],
+            "commanderSkill": [
+                "PriorityTargetModifier",
+                "FlightSpeedModifier",
+                "TorpedoAlertnessModifier",
+                "VisibilityModifier"
+            ],
+            "authorOpenId": "openId_Test",
+            "commanderName": "Azur_SovRussia",
+            "shipId": "PRSB709",
+            "nation": "Russia"
+        }
+    ]
+}
