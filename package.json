@@ -29,7 +29,7 @@
     "dev:jd": "npm run build:jd -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch",
     "lint": "eslint --ext .ts,.js,.tsx src/ --max-warnings 10",
-    "e2e": "jest --runInBand --verbose"
+    "e2e": "jest --config ./jest.e2e.config.js --runInBand "
   },
   "husky": {
     "hooks": {
