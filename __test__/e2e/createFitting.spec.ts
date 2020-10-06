@@ -1,23 +1,16 @@
-import automator from 'miniprogram-automator'
-import path from 'path'
-import mockResponse from '../@mock/fittingEditorResponse.json'
-
-// const cliPath = path.join('D:/Applications/WeChat Dev Tools')
-const demoPath = path.join('./dist')
+import miniProgramCreator from './helpers/miniProgramCreator'
+import mockResponse from './fixtures/fittingEditorResponse.json'
 
 const mockInput = {
-    title: 'E2E测试标题',
-    description: 'E2E测试描述',
+    title: 'E2E-测试标题',
+    description: 'E2E-测试描述',
 }
 
 let miniProgram
 let page
-beforeAll(async () => {
-    miniProgram = await automator.launch({
-        projectPath: demoPath,
-        cliPath: 'D:\\Applications\\WeChat Dev Tools\\cli.bat',
-    })
 
+beforeAll(async () => {
+    miniProgram = await miniProgramCreator()
     page = await miniProgram.currentPage()
     await page.waitFor(500)
 }, 40000)
@@ -27,7 +20,6 @@ afterAll(async () => {
 })
 
 describe('FittingEditor 方案编辑页', () => {
-
     it('新建装配方案应该能正确打开', async () => {
         const newFitting = await page.$('.fitting-banner')
         await newFitting.tap()
@@ -57,7 +49,7 @@ describe('FittingEditor 方案编辑页', () => {
             const shipSelect = await page.$$('.ship-list')
             const shipImage = await shipSelect[0].$('.item__ext-ship')
             const shipImageUrl = await shipImage.attribute('src')
-            
+
             await shipSelect[0].tap()
             await page.waitFor(500)
 
@@ -98,7 +90,6 @@ describe('FittingEditor 方案编辑页', () => {
     })
 
     describe('skillSelector 技能选择器', () => {
-
         it('技能选择器应该能正确打开', async () => {
             // 跳转技能选择器
             const skillSelector = await page.$('#skill-selector')
@@ -118,25 +109,24 @@ describe('FittingEditor 方案编辑页', () => {
         })
 
         it('skillSelector 应该能正确的选择技能', async () => {
-
             const level_1 = await page.$('#skill-level-1')
             const level_1_items = await level_1.$$('.skill-item')
             await level_1_items[0].tap()
             await page.waitFor(200)
             expect(await level_1_items[0].attribute('class')).toContain('skill-item--selected')
-    
+
             const level_2 = await page.$('#skill-level-2')
             const level_2_items = await level_2.$$('.skill-item')
             await level_2_items[2].tap()
             await page.waitFor(200)
             expect(await level_2_items[2].attribute('class')).toContain('skill-item--selected')
-    
+
             const level_3 = await page.$('#skill-level-3')
             const level_3_items = await level_3.$$('.skill-item')
             await level_3_items[5].tap()
             await page.waitFor(200)
             expect(await level_3_items[5].attribute('class')).toContain('skill-item--selected')
-    
+
             const level_4 = await page.$('#skill-level-4')
             const level_4_items = await level_4.$$('.skill-item')
             await level_4_items[7].tap()
@@ -144,7 +134,7 @@ describe('FittingEditor 方案编辑页', () => {
             expect(await level_4_items[7].attribute('class')).toContain('skill-item--selected')
         })
 
-        afterAll(async ()=>{
+        afterAll(async () => {
             // 结束提交跳转回编辑器
             const submitButton = await page.$('#skill-submit')
             await submitButton.tap()
@@ -167,7 +157,6 @@ describe('FittingEditor 方案编辑页', () => {
     })
 
     it('应该正确的根据选择内容提交装备方案，并跳转详情页', async () => {
-
         // 拦截提交 post 直接返回 mock 成功ID
         await miniProgram.mockWxMethod(
             'request',
@@ -181,11 +170,11 @@ describe('FittingEditor 方案编辑页', () => {
             },
             JSON.stringify(mockResponse)
         )
-        
+
         // 拦截成功后 confirm 跳转成功后 装配详情
         await miniProgram.mockWxMethod('showModal', {
             confirm: true,
-            cancel: false
+            cancel: false,
         })
 
         // 提交
@@ -201,7 +190,4 @@ describe('FittingEditor 方案编辑页', () => {
         page = await miniProgram.currentPage()
         expect(page.path).toBe('pages/fittingDetail/fittingDetail')
     })
-
 })
-
-
