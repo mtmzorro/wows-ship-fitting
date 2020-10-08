@@ -1,0 +1,28 @@
+language: node_js
+node_js:
+- '12'
+
+branches:
+  only:
+  - master
+  - develop
+
+cache:
+  directories:
+  - node_modules
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_0fb5a69e10c8_key -iv $encrypted_0fb5a69e10c8_iv -in .travis/private.key.enc -out .travis/private.key -d
+- yarn global add @tarojs/cli@3.0.7
+
+install:
+- yarn install
+
+script:
+- yarn build:weapp
+
+after_success:
+- test $TRAVIS_BRANCH = "develop" &&
+  node ./miniprogramCI/cli.js preview --robot 2 --desc TravisCI_develop --keyPath .travis/private.key
+- test $TRAVIS_BRANCH = "master" &&
+  node ./miniprogramCI/cli.js upload --robot 1 --desc TravisCI_master --keyPath .travis/private.key
