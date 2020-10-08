@@ -30,7 +30,7 @@
     "dev:quickapp": "npm run build:quickapp -- --watch",
     "lint": "eslint --ext .ts,.js,.tsx src/ --max-warnings 10",
     "e2e": "yarn build:weapp && jest --config ./jest.e2e.config.js --runInBand",
-    "preview:weapp": "node ./miniprogramCI/cli.js preview --robot 3 --desc LocalPreview --keyPath ./private.key"
+    "preview:weapp": "node ./miniprogramCI/cli.js preview --robot 3 --desc LocalPreview --keyPath ./.travis/private.key"
   },
   "husky": {
     "hooks": {
