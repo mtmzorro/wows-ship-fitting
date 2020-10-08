@@ -1,0 +1,34 @@
+language: node_js
+node_js: 
+  - "12"
+
+branches:
+  only:
+    - master
+    - develop
+
+cache:
+  directories:
+    - node_modules
+
+before_install:
+
+install:
+  - yarn install
+
+script:
+  - yarn build:weapp
+
+deploy:
+  # deploy develop to the staging environment
+  - provider: script
+    script: 
+      - node ./miniprogramCI/cli.js preview --robot 2 --desc TravisCI_develop --keyPath ./private.key
+    on:
+      branch: develop
+  # deploy master to production
+  - provider: script
+    script: 
+      - node ./miniprogramCI/cli.js upload --robot 1 --desc TravisCI_master --keyPath ./private.key
+    on:
+      branch: master
