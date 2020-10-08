@@ -29,7 +29,8 @@
     "dev:jd": "npm run build:jd -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch",
     "lint": "eslint --ext .ts,.js,.tsx src/ --max-warnings 10",
-    "e2e": "jest --config ./jest.e2e.config.js --runInBand "
+    "e2e": "yarn build:weapp && jest --config ./jest.e2e.config.js --runInBand",
+    "preview:weapp": "node ./miniprogramCI/cli.js preview --robot 3 --desc LocalPreview --keyPath ./private.key"
   },
   "husky": {
     "hooks": {
@@ -68,6 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^2.x",
     "@typescript-eslint/parser": "^2.x",
     "babel-preset-taro": "3.0.7",
+    "commander": "^6.1.0",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-taro": "3.0.7",
@@ -77,6 +79,7 @@
     "husky": "^4.3.0",
     "jest": "^26.4.2",
     "miniprogram-automator": "^0.10.0",
+    "miniprogram-ci": "^1.0.83",
     "stylelint": "9.3.0",
     "typescript": "^3.7.0"
   }
