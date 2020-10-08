@@ -1,3 +1,7 @@
+# WOWS Ship Fitting
+
+[![Build Status](https://travis-ci.com/mtmzorro/wows-ship-fitting.svg?branch=master)](https://travis-ci.com/mtmzorro/wows-ship-fitting)
+
 ## Dev
 
 ~~~

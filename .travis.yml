@@ -13,6 +13,7 @@ cache:
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_0fb5a69e10c8_key -iv $encrypted_0fb5a69e10c8_iv -in .travis/private.key.enc -out .travis/private.key -d
+- echo "{\"appId\":\"$leancloud_AppID\",\"appKey\":\"$leancloud_AppKey\"}" > .travis/leancloudApp.json
 - yarn global add @tarojs/cli@3.0.7
 
 install:
