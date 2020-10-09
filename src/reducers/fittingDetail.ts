@@ -1,3 +1,5 @@
+import { Fitting } from '../type/types'
+
 // Actions type
 export enum actionType {
     SET_FITTING_DETAIL = 'SET_FITTING_DETAIL',
