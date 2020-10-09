@@ -5,7 +5,6 @@ import { getShipImage, getShipById } from '../../service/ship'
 import { getCommanderImage } from '../../service/commander'
 import { getSkillImage } from '../../service/skill'
 import { shipNameLocalize, tierLocalize } from '../../utils/localization'
-import { Fitting } from '../../type/types'
 import './fittingItem.scss'
 
 type Props = {
