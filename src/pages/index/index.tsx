@@ -7,17 +7,21 @@ import { queryRecentFitting } from '../../service/common'
 import { actions as fittingEditorActions } from '../../reducers/fittingEditor'
 import { actions as fittingDetailActions } from '../../reducers/fittingDetail'
 import FittingItem from '../../components/fittingItem/fittingItem'
+import Skeleton from './skeleton/skeleton'
 import './index.scss'
 
 const Index: React.FC = () => {
     const dispatch = useDispatch()
     const [fittingList, setFittingList] = useState<Fitting[]>([])
+    const [fittingLoading, setFittingLoading] = useState(false)
 
     // 获取服务端 近期 Fitting
     const getFittingData = async () => {
         try {
+            setFittingLoading(true)
             const result = await queryRecentFitting()
-            console.log('queryAllFitting', result)
+
+            setFittingLoading(false)
             setFittingList(result)
         } catch (error) {
             Taro.showToast({
@@ -28,8 +32,33 @@ const Index: React.FC = () => {
         }
     }
 
+    // 检查更新
+    const checkUpdate = () => {
+        const updateManager = Taro.getUpdateManager()
+        updateManager.onUpdateReady(function () {
+            Taro.showModal({
+                title: '更新提示',
+                content: '新版本已经准备好，是否重启应用？',
+                success: function (res) {
+                    if (res.confirm) {
+                        // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                        updateManager.applyUpdate()
+                    }
+                },
+            })
+        })
+        updateManager.onUpdateFailed(function () {
+            Taro.showToast({
+                title: '更新失败，请稍后重试。',
+                icon: 'none',
+                duration: 2000,
+            })
+        })
+    }
+
     // 初次刷新
     useEffect(() => {
+        checkUpdate()
         getFittingData()
     }, [])
 
@@ -71,16 +100,22 @@ const Index: React.FC = () => {
                 <View className='section-title__sub'>Recent</View>
                 <View className='section-title__content'>近期云端装配</View>
             </View>
-            {fittingList.map((fitting) => {
-                return (
-                    <FittingItem
-                        key={fitting.id}
-                        {...fitting}
-                        itemType='card'
-                        handleFittingDetail={handleFittingDetail}
-                    />
-                )
-            })}
+            {fittingLoading ? (
+                <Skeleton />
+            ) : (
+                <React.Fragment>
+                    {fittingList.map((fitting) => {
+                        return (
+                            <FittingItem
+                                key={fitting.id}
+                                {...fitting}
+                                itemType='card'
+                                handleFittingDetail={handleFittingDetail}
+                            />
+                        )
+                    })}
+                </React.Fragment>
+            )}
         </View>
     )
 }
