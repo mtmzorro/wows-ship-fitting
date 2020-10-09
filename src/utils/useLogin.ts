@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../reducers/user'
 import { checkServerLogin, serverLogin, saveServerUserInfo } from '../service/common'
+import { User } from '../type/types'
 
 /**
  * useLogin 登陆、wx.UserInfo Hook

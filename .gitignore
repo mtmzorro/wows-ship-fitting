@@ -6,4 +6,3 @@ node_modules/
 .DS_Store
 private.key
 leancloudApp.json
-temp/

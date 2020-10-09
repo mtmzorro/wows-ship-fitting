@@ -1,3 +1,5 @@
+import { Ship, Fitting, Nation } from '../type/types'
+
 // Actions type
 export enum actionType {
     SET_ID = 'SET_ID',
