@@ -1,3 +1,5 @@
+import { User } from '../type/types'
+
 // Actions type
 export enum actionType {
     SET_USER_ID = 'SET_USER_ID',

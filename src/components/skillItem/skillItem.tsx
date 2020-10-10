@@ -8,6 +8,7 @@ import {
     skillPerksLocalize,
 } from '../../utils/localization'
 import { getSkillImage } from '../../service/skill'
+import { Skill } from '../../type/types'
 import './skillItem.scss'
 
 type SkillData = Skill & { selected?: boolean }

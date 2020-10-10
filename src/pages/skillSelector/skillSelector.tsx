@@ -4,6 +4,7 @@ import { View, Button, ScrollView } from '@tarojs/components'
 import { useDispatch } from 'react-redux'
 import { getSkills } from '../../service/skill'
 import SkillItem from '../../components/skillItem/skillItem'
+import { Skill } from '../../type/types'
 import { actions } from '../../reducers/fittingEditor'
 import './skillSelector.scss'
 

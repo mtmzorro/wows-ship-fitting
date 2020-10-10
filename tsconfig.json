@@ -21,8 +21,7 @@
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types",
-      "global.d.ts",
-      "src/types/app.d.ts"
+      "global.d.ts"
     ]
   },
   "exclude": [
