@@ -101,7 +101,7 @@ export default {
             cost: 3,
         },
         {
-            id: 'AIGunsRangeModifier',
+            id: 'AIGunsEfficiencyModifier',
             sort: '3-05',
             cost: 3,
         },
