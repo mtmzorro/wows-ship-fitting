@@ -38,7 +38,7 @@ export const getShipsByTier = (tier: number) => {
     return result
 }
 
-// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/ship_previews/${id}.png
+// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.9.9.1/ship_previews/${id}.png
 export const getShipImage = (id: string): string => {
-    return `${config.imageCDNPath}/ship_previews/${id}.png`
+    return `${config.imageCDNPathShip}/ship_previews/${id}.png`
 }
