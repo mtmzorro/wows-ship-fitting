@@ -1,4 +1,3 @@
-import { Skill } from '../type/types'
 import skillData from '../data/skill'
 import config from '../config/config'
 
