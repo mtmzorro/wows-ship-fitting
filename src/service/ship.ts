@@ -1,14 +1,5 @@
-import { Nation, ShipSpecies, Ship } from '../type/types'
 import shipData from '../data/ship'
 import config from '../config/config'
-
-
-// class ShipService {
-//     public static getShips(): Ship[] {
-//         const ships = [ ...shipData ]
-//         return ships
-//     }
-// }
 
 export const getShips = () => {
     const result = [ ...shipData ] as Ship[]
@@ -47,25 +38,7 @@ export const getShipsByTier = (tier: number) => {
     return result
 }
 
-// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/ship_previews/${id}.png
+// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.9.9.1/ship_previews/${id}.png
 export const getShipImage = (id: string): string => {
-    return `${config.imageCDNPath}/ship_previews/${id}.png`
+    return `${config.imageCDNPathShip}/ship_previews/${id}.png`
 }
-
-// // get 舰船选择器数据
-// const getShipSelectorData = () => {
-//     const ships = getShips()
-//     const nationList = getNationList()
-//     const shipSpeciesList = getShipSpeciesList()
-
-//     if (!ships) {
-//         return undefined
-//     }
-//     const result = nationList.map((nation: Nation) => {
-//         const newList = getShipsByNation(nation)
-//         return {
-
-//         }
-//     })
-// }
-

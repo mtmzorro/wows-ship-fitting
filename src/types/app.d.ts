@@ -1,4 +1,4 @@
-export type Nation =
+declare type Nation =
     | "Commonwealth"
     | "Europe"
     | "France"
@@ -11,7 +11,7 @@ export type Nation =
     | "USA"
     | "United_Kingdom"
 
-export type ShipSpecies =
+declare type ShipSpecies =
     | 'AirCarrier'
     | 'Battleship'
     | 'Cruiser'
@@ -19,22 +19,20 @@ export type ShipSpecies =
     // | 'Submarine'
     // | 'Auxillary'
 
-export interface Ship {
+declare interface Ship {
     id: string
-    // name: string
     nation: Nation
     species: ShipSpecies
     tier: number
     upgrade: {}
 }
 
-export interface Commander {
-    // id: string
+declare interface Commander {
     name: string
     nation: Nation
 }
 
-export interface Fitting {
+declare interface Fitting {
     id: string
     createDate: number
     modifyDate: number
@@ -49,7 +47,7 @@ export interface Fitting {
     description: string
 }
 
-export interface User {
+declare interface User {
     id: string
     openId: string
     avatarUrl: string
@@ -62,7 +60,7 @@ export interface User {
     username: string
 }
 
-export interface Skill {
+declare interface Skill {
     id: string
     name?: string
     sort: string

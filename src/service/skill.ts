@@ -1,4 +1,3 @@
-import { Skill } from '../type/types'
 import skillData from '../data/skill'
 import config from '../config/config'
 
@@ -30,7 +29,7 @@ export const getSkillbySort = (sort: string) => {
     return result
 }
 
-// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/crew_commander/skills/big/icon_perk_FlightSpeedModifier.png
+// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res-kit@0.9.9.1/crew_commander/skills/big/icon_perk_FlightSpeedModifier.png
 export const getSkillImage = (id: string): string => {
-    return `${config.imageCDNPath}/crew_commander/skills/big/icon_perk_${id}.png`
+    return `${config.imageCDNPathKit}/crew_commander/skills/big/icon_perk_${id}.png`
 }

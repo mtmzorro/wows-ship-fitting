@@ -1,4 +1,3 @@
-import {  Nation, Commander } from '../type/types'
 import commanderData from '../data/commander'
 import config from '../config/config'
 
@@ -23,7 +22,7 @@ export const getCommandersByNation = (nation: Nation) => {
     return result
 }
 
-// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res@0.0.1/crew_commander/base/${data.nation}/${data.name}.png
+// https://cdn.jsdelivr.net/gh/mtmzorro/ship-res-kit@0.9.9.1/crew_commander/base/${data.nation}/${data.name}.png
 export const getCommanderImage = (name : string, nation: string): string => {
-    return `${config.imageCDNPath}/crew_commander/base/${nation}/${name}.png`
+    return `${config.imageCDNPathKit}/crew_commander/base/${nation}/${name}.png`
 }
