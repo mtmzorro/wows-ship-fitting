@@ -1,4 +1,3 @@
-import {  Nation, Commander } from '../type/types'
 import commanderData from '../data/commander'
 import config from '../config/config'
 

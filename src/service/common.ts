@@ -1,5 +1,3 @@
-import Taro from '@tarojs/taro'
-import { Fitting, User } from '../type/types'
 import config from '../config/config'
 import AV from '../utils/leanCloud'
 import nationData from '../data/nation'

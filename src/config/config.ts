@@ -1,6 +1,6 @@
 import leancloudApp from '../../.travis/leancloudApp.json'
 
-const versionData = '0.9.5'
+const versionData = '0.9.8.1'
 const versionImage = '0.9.9.1'
 const CDNPath = 'https://cdn.jsdelivr.net/gh/mtmzorro'
 
