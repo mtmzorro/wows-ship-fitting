@@ -4,15 +4,14 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/mtmzorro/wows-ship-fitting?color=brightgreen)
 ![GitHub](https://img.shields.io/github/license/mtmzorro/wows-ship-fitting?)
 
-> 一个帮助 World of Warships  玩家管理战舰和舰长技能装配方案的 App 小程序
-> 
+> 一个帮助 World of Warships  玩家管理战舰和舰长技能装配方案的 App 小程序<br/>
 > 打开「战舰工坊」管理自己的方案并分享给需要的战友们把
 
 ![preview](https://cdn.jsdelivr.net/gh/mtmzorro/wows-ship-fitting-site@0.0.1/images/preview.jpg)
 
 ## 安装方式
 
-打开「微信」扫描上方图像中小程序码即可
+打开「微信」扫描上方图像中小程序码，或在「微信」中搜索「战舰工坊」
 
 ## 主要功能
 
@@ -31,7 +30,7 @@
 
 ### 基础相关
 
-- **Node.js **实际项目开发中使用版本 12.18.1，符合 Taro、React 等要求即可
+- **Node.js** 实际项目开发中使用版本 12.18.1，符合 Taro、React 等要求即可
 
 - **Taro** 使用 Taro@3.0.7 ，需要安装对应 @tarojs/cli@3.0.7 或者使用 npx ，[参考 Taro 文档](https://taro-docs.jd.com/taro/docs/GETTING-STARTED)
 
