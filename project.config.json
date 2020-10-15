@@ -1,6 +1,6 @@
 {
     "miniprogramRoot": "dist/",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "projectname": "wows-ship-fitting",
     "description": "wows ship fitting",
     "appid": "wx43ad4f0a5c3e86b4",
