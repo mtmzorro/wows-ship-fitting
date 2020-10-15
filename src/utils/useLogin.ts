@@ -56,7 +56,7 @@ const useLogin = (redirectUrl: string, redirectType: 'page' | 'tabBar'): boolean
         } else {
             // 未授权 跳转 login 授权页
             Taro.redirectTo({
-                url: `/pages/login/login?redirectUrl=${redirectUrl}&redirectType=${redirectType}`,
+                url: `/pages/login/login?redirectUrl=${encodeURIComponent(redirectUrl)}&redirectType=${redirectType}`,
             })
         }
     }
@@ -64,8 +64,8 @@ const useLogin = (redirectUrl: string, redirectType: 'page' | 'tabBar'): boolean
     // 生命周期 onReady 时执行
     useReady(async () => {
         // 获取 Server 登录态
-        const user = checkServerLogin()
-        console.log('当前用户 Server 登录态', user)
+        const user = await checkServerLogin()
+        console.log('useLogin 获取当前用户 Server 登录态', user)
         Taro.showLoading({ title: '加载中...', mask: true })
 
         if (user) {

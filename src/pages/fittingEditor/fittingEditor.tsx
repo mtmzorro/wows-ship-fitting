@@ -29,7 +29,7 @@ interface State {
 
 const FittingEditor: React.FC = () => {
     // 登录态 微信信息授权
-    const isLogin = useLogin('/pages/fittingEditor/fittingEditor', 'page')
+    const isLogin = useLogin('/pages/fittingEditor/fittingEditor?type=new', 'page')
 
     const router = useRouter()
     // new | edit
@@ -117,8 +117,9 @@ const FittingEditor: React.FC = () => {
 
         Taro.showLoading({ mask: true, title: '装配方案保存中' })
         try {
+            console.log('save pageType:', pageType);
             // new or edit
-            const result = pageType === 'new' ? await saveFitting(cache) : await updateFitting(cache)
+            const result = pageType === 'edit' ? await updateFitting(cache) : await saveFitting(cache)
 
             Taro.hideLoading()
             Taro.showModal({

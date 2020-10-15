@@ -10,7 +10,7 @@ const Login: React.FC = () => {
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const redirectUrl = router.params.redirectUrl
+    const redirectUrl = decodeURIComponent(router.params.redirectUrl)
     const redirectType = router.params.redirectType
 
     // button onGetUserInfo 获取用户授权弹窗

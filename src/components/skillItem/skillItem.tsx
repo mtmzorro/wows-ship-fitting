@@ -42,7 +42,7 @@ const SkillItem: React.FC<Props> = (props) => {
             : {}
 
     const classNames = classnames('skill-item', {
-        'skill-item--selected': skill.selected,
+        'skill-item--selected': itemType === 'interactive' && skill.selected,
         'skill-item--active': itemType === 'interactive',
         [`skill-item--${itemType}`]: itemType,
     })

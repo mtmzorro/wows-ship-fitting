@@ -1,3 +1,4 @@
+import Taro from '@tarojs/taro'
 import config from '../config/config'
 import AV from '../utils/leanCloud'
 import nationData from '../data/nation'
@@ -119,8 +120,16 @@ export const serverLogin = async (): Promise<any> => {
 }
 
 // checkServerLogin 检查登录态
-export const checkServerLogin = () => {
-    return AV.User.current()
+export const checkServerLogin = async () => {
+    try {
+        const sessionResult = await Taro.checkSession()
+        console.log('sessionResult', sessionResult)
+        return AV.User.current()
+    } catch (error) {
+        console.log('sessionResult error', error)
+        return false
+    }
+    
 }
 
 // saveServer wx.UserInfo to Server
