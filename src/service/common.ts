@@ -48,8 +48,9 @@ export const saveFitting = async (fitting: Partial<Fitting>): Promise<Fitting> =
 export const updateFitting = async (fitting: Partial<Fitting>): Promise<Fitting> => {
     const dataObject = AV.Object.createWithoutData(config.dbClasses.Fitting, fitting.id)
     Object.keys(fitting).forEach((key) => {
-        // id 为数据库自生成，authorOpenId 无需更新
-        if (key === 'id' || key === 'authorOpenId') return 
+        // 需要忽略的 key：id 为数据库自生成，authorOpenId 无需更新
+        const isIgnoreKey = key === 'id' || key === 'authorOpenId'
+        if (isIgnoreKey) return 
         dataObject.set(key, fitting[key])
     })
 
@@ -66,7 +67,7 @@ export const queryAllFitting = async (): Promise<any> => {
     return result
 }
 
-// queryRecentFitting 获取最近20个方案，并本地缓存
+// queryRecentFitting 获取最近20个精选顶置方案，并本地缓存
 export const queryRecentFitting = async (): Promise<Fitting[]> => {
     const storageResult = await getStorage('indexFittings')
 
@@ -74,6 +75,7 @@ export const queryRecentFitting = async (): Promise<Fitting[]> => {
         return storageResult
     } else {
         const query = new AV.Query(config.dbClasses.Fitting)
+        query.equalTo('isTop', true)
         query.descending('createdAt')
         query.limit(20)
 
