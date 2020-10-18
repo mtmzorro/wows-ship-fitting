@@ -11,17 +11,16 @@ import './index.scss'
 
 const Index: React.FC = () => {
     const dispatch = useDispatch()
-    const [fittingList, setFittingList] = useState<Fitting[]>([])
-    const [fittingLoading, setFittingLoading] = useState(false)
+    const [topFittings, setTopFittings] = useState<Fitting[]>([])
+    const [topFittingsLoading, setTopFittingsLoading] = useState(false)
 
-    // 获取服务端 近期 Fitting
-    const getFittingData = async () => {
+    // 设置近期顶置精选
+    const setTopFittingsData = async () => {
         try {
-            setFittingLoading(true)
+            setTopFittingsLoading(true)
             const result = await queryRecentFitting()
-
-            setFittingLoading(false)
-            setFittingList(result)
+            setTopFittingsLoading(false)
+            setTopFittings(result)
         } catch (error) {
             Taro.showToast({
                 title: '服务器或数据有问题啦，请稍后重试。',
@@ -58,12 +57,12 @@ const Index: React.FC = () => {
     // 初次刷新
     useEffect(() => {
         checkUpdate()
-        getFittingData()
+        setTopFittingsData()
     }, [])
 
     // 下拉刷新
     usePullDownRefresh(async () => {
-        await getFittingData()
+        await setTopFittingsData()
         Taro.stopPullDownRefresh()
     })
 
@@ -97,13 +96,13 @@ const Index: React.FC = () => {
             </Button>
             <View className='section-title'>
                 <View className='section-title__sub'>Recent</View>
-                <View className='section-title__content'>近期云端装配</View>
+                <View className='section-title__content'>精选云端装配</View>
             </View>
-            {fittingLoading ? (
+            {topFittingsLoading ? (
                 <Skeleton />
             ) : (
                 <React.Fragment>
-                    {fittingList.map((fitting) => {
+                    {topFittings.map((fitting) => {
                         return (
                             <FittingItem
                                 key={fitting.id}

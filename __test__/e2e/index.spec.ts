@@ -28,7 +28,7 @@ describe('Index 首页', () => {
 
     it('近期装配列表根据 mock 数据应该正常显示', async () => {
         const listTitle = await page.$('.section-title__content')
-        expect(await listTitle.text()).toBe('近期云端装配')
+        expect(await listTitle.text()).toBe('精选云端装配')
 
         // 清理已有 本地存储
         await miniProgram.callWxMethod('removeStorageSync', 'indexFittings')
