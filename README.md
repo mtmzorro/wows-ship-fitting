@@ -22,6 +22,9 @@
 
 ## 更新日志
 
+### 1.0.3
+- Feature 首页近期云端方案筛选过滤，防止出现无意义方案等
+
 ### 1.0.2
 - Bug Fix 修复 登录页成功后返回编辑页参数失效
 - Bug Fix 修复 FittingDetail 方案详情页技能列表仍会显示技能已选的问题
@@ -177,7 +180,6 @@ $ yarn preview:weapp
 - [使用Coding持续集成部署微信小程序](https://cloud.tencent.com/developer/article/1627514)
 - [miniprogram-ci 官方文档](https://developers.weixin.qq.com/miniprogram/dev/devtools/ci.html)
 - [小程序的持续集成方案](https://juejin.im/post/6844903649055866894)
-- [使用 GitHub Actions 为 Taro 项目添加持续集成](https://github.com/harrisoff/harrisoff.github.io/blob/d3b3035cfa96a28027dae21913d45a70c876e8e2/_posts/2020-05-20-%E4%BD%BF%E7%94%A8-GitHub-Actions-%E4%B8%BA-Taro-%E9%A1%B9%E7%9B%AE%E6%B7%BB%E5%8A%A0%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90.md)
 
 ## 相关资源版权声明
 
